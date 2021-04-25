@@ -1,3 +1,10 @@
+from decimal import Decimal
+from typing import Union, Type
+
+
+NumberType: Type = Union[float, int, complex, Decimal]
+
+
 class Singleton(type):
     __instances = {}
 

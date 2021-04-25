@@ -1,6 +1,4 @@
-from typing import Any, Dict, Text
-
-from src.cacheable_interface import ICacheable
+from src.cacheables.cacheable_interface import ICacheable
 
 
 class Cacheable(ICacheable):

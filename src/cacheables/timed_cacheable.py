@@ -1,6 +1,6 @@
 from typing import NoReturn
 import datetime as dt
-from src.cacheable import Cacheable
+from src.cacheables.cacheable import Cacheable
 
 
 class TimedCacheable(Cacheable):
