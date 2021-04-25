@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Tuple, Union, Dict, Text
+from typing import Any, Tuple, Union, Dict, Text, NoReturn
 
 
 class ICacheable(metaclass=ABCMeta):
@@ -20,4 +20,8 @@ class ICacheable(metaclass=ABCMeta):
 
     @abstractmethod
     def stats(self) -> Dict[Text: Any]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _compute_mem_sizes(self) -> NoReturn:
         raise NotImplementedError
