@@ -1,5 +1,6 @@
 import datetime as dt
 import json
+import threading
 from typing import Text, Dict, Any, Tuple, Union, NoReturn, Set, Iterable
 
 from src.cacheables import ICacheable, NOTEXISTS
@@ -19,6 +20,8 @@ class Cache:
         self.misses: int = 0
         self.lru: Union[Tuple[Any], None] = None
         self.mru: Union[Tuple[Any], None] = None
+        self.mutex = threading.Lock()
+        self.cleaner_thread = threading.Thread(target=self.clean)
 
     @property
     def accesses(self) -> int:
@@ -33,16 +36,16 @@ class Cache:
             current_cacheable: ICacheable = self.__data[key]
 
             if current_cacheable.previous:
-                current_cacheable.previous.next = current_cacheable.next or current_cacheable
+                current_cacheable.previous.next = current_cacheable.next if current_cacheable.next is not None else key
             else:
-                self.lru = current_cacheable.next or current_cacheable
+                self.lru = current_cacheable.next if current_cacheable.next is not None else key
 
             if current_cacheable.next:
                 current_cacheable.next.previous = current_cacheable.previous
                 current_cacheable.previous = self.mru
                 current_cacheable.next = None
-                self.mru.next = current_cacheable
-                self.mru = current_cacheable
+                self.mru.next = key
+                self.mru = key
 
             self.hits += 1
             return current_cacheable.get_value()
@@ -53,6 +56,14 @@ class Cache:
     def put(self, key: Tuple[Any], value: Any) -> NoReturn:
         if self.max_size == self.size:
             self.delete(self.lru)
+
+        if self.lru is None:
+            self.lru = key
+
+        if self.mru is not None:
+            self.mru.next = key
+        self.mru = key
+
         self.__data[key] = value
         self.size += 1
 
