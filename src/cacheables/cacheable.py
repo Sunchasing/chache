@@ -9,7 +9,7 @@ class Cacheable(ICacheable):
         self.mem_size = 0.0
         self.value_mem_size = 0.0
 
-    def get(self):
+    def get_value(self):
         self.hits += 1
         return self.value
 

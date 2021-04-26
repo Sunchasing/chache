@@ -11,11 +11,11 @@ class ICacheable(metaclass=ABCMeta):
         self.hits: int = 0
         self.mem_size: float
         self.value_mem_size: float
-        self._previous: Union[Tuple[Any], None] = None
-        self._next: Union[Tuple[Any], None] = None
+        self.previous: Union[Tuple[Any], None] = None
+        self.next: Union[Tuple[Any], None] = None
 
     @abstractmethod
-    def get(self) -> Any:
+    def get_value(self) -> Any:
         raise NotImplementedError
 
     @abstractmethod

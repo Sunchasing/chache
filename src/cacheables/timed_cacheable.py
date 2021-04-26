@@ -10,7 +10,7 @@ class TimedCacheable(Cacheable):
         super().__init__(value)
         self.expiration: dt.date = expiration
 
-    def get(self):
+    def get_value(self):
         self.hits += 1
         return self.value
 
