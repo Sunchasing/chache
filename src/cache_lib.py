@@ -1,7 +1,7 @@
 import datetime as dt
-import json
 import threading
-from typing import Text, Dict, Any, Tuple, Union, NoReturn, Set, Iterable
+import time
+from typing import Text, Dict, Any, Tuple, Union, NoReturn, KeysView, ValuesView, ItemsView
 
 from src.cacheables import ICacheable, NOTEXISTS
 from utils import NumberType
@@ -9,7 +9,10 @@ from utils import NumberType
 
 class Cache:
 
-    def __init__(self, max_size: Union[int, None] = None, max_mem_size: Union[float, None] = None):
+    def __init__(self, max_size: Union[int, None] = None,
+                 max_mem_size: Union[float, None] = None,
+                 cleaning_frequency_s: NumberType = 120):
+
         self.__data: Dict[Tuple[Any]: ICacheable] = {}
         self.size: Union[int, None] = 0
         self.mem_size: float = 0.
@@ -20,8 +23,15 @@ class Cache:
         self.misses: int = 0
         self.lru: Union[Tuple[Any], None] = None
         self.mru: Union[Tuple[Any], None] = None
-        self.mutex = threading.Lock()
-        self.cleaner_thread = threading.Thread(target=self.clean)
+        self.cleaner_thread: threading.Thread = self._create_cleaner_thread(cleaning_frequency_s)
+
+    def _create_cleaner_thread(self, cleaning_frequency_s: NumberType) -> threading.Thread:
+        mister_clean = threading.Thread(target=self.clean,
+                                        name="cache_cleaner_thread",
+                                        args=(cleaning_frequency_s,),
+                                        daemon=True)
+        mister_clean.start()
+        return mister_clean
 
     @property
     def accesses(self) -> int:
@@ -67,9 +77,6 @@ class Cache:
         self.__data[key] = value
         self.size += 1
 
-    def clean(self) -> int:
-        raise NotImplementedError
-
     def delete(self, key: Tuple[Any]) -> NoReturn:
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
@@ -101,19 +108,33 @@ class Cache:
         self.size = 0
 
     def stats(self) -> Dict[Text: NumberType]:
-        raise NotImplementedError
+        return {
+            "hits": self.hits,
+            "misses": self.misses,
+            "accesses": self.accesses,
+            "last_cleaned": self.last_cleaned,
+        }
 
-    def keys(self) -> Set[Tuple[Any]]:
-        raise NotImplementedError
+    def keys(self) -> KeysView[Tuple[Any]]:
+        return self.__data.keys()
 
-    def values(self) -> Set[Any]:
-        raise NotImplementedError
+    def values(self) -> ValuesView[Any]:
+        return self.__data.values()
 
-    def items(self) -> Iterable[Tuple[Tuple[Any], Any]]:
-        raise NotImplementedError
+    def items(self) -> ItemsView[Tuple[Tuple[Any], Any]]:
+        return self.__data.items()
 
-    def __repr__(self):
+    def clean(self, cleaning_frequency_s: NumberType) -> NoReturn:
+        time.sleep(cleaning_frequency_s)
+        current_time = dt.datetime.now()
+        for key, cacheable in self.__data.items():
+            if cacheable.expires:
+                if cacheable.expiration >= current_time:
+                    self.delete(key)
+        self.last_cleaned = current_time
+
+    def __repr__(self) -> Text:
         return str(self)
 
     def __str__(self) -> Text:
-        return json.dumps(self.stats(), indent=4)
+        return f"Cache(size=({self.size}/{self.max_size}), memory size=({self.mem_size}/{self.max_mem_size}))"
