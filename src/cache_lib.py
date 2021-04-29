@@ -3,7 +3,7 @@ import threading
 import time
 from typing import Text, Dict, Any, Tuple, Union, NoReturn, KeysView, ValuesView, ItemsView
 
-from src.cacheables import ICacheable, NOTEXISTS
+from src.cacheables import ICacheable, NOTEXISTS, new_cacheable
 from utils import NumberType
 
 
@@ -12,9 +12,9 @@ class Cache:
     def __init__(self, max_size: Union[int, None] = None,
                  cleaning_frequency_s: NumberType = 120):
 
-        self.__data: Dict[Tuple[Any]: ICacheable] = {}
-        self.size: Union[int, None] = 0
-        self.max_size: int = max_size
+        self.__data: Dict[Tuple[Any], ICacheable] = {}
+        self.size: int = 0
+        self.max_size: Union[int, None] = max_size
         self.last_cleaned: Union[dt.timedelta, None] = None
         self.hits: int = 0
         self.misses: int = 0
@@ -35,23 +35,33 @@ class Cache:
         return self.hits + self.misses
 
     @property
-    def data(self) -> Dict[Tuple[Any]: ICacheable]:
+    def data(self) -> Dict[Tuple[Any], ICacheable]:
         return self.__data
 
+    def __enter__(self):
+        raise NotImplementedError
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        raise NotImplementedError
+
+    def __call__(self, *args, **kwargs):
+        raise NotImplementedError
+
     def get(self, key: Tuple[Any]) -> Any:
+        # TODO: Unfrick this ugliness
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
 
-            if current_cacheable.previous:
-                current_cacheable.previous.next = current_cacheable.next if current_cacheable.next is not None else key
+            if current_cacheable.previous_key:
+                self.__data.get(current_cacheable.previous_key).next_key = current_cacheable.next_key if current_cacheable.next_key is not None else key
             else:
-                self.lru = current_cacheable.next if current_cacheable.next is not None else key
+                self.lru = current_cacheable.next_key if current_cacheable.next_key is not None else key
 
-            if current_cacheable.next:
-                current_cacheable.next.previous = current_cacheable.previous
-                current_cacheable.previous = self.mru
-                current_cacheable.next = None
-                self.mru.next = key
+            if current_cacheable.next_key:
+                self.__data.get(current_cacheable.next_key).previous_key = current_cacheable.previous_key
+                current_cacheable.previous_key = self.mru
+                current_cacheable.next_key = None
+                self.__data.get(self.mru).next_key = key
                 self.mru = key
 
             self.hits += 1
@@ -60,7 +70,9 @@ class Cache:
             self.misses += 1
             return NOTEXISTS
 
-    def put(self, key: Tuple[Any], value: Any) -> NoReturn:
+    def put(self, key: Tuple[Any], value: Any, expiry: Union[dt.date, None] = None) -> NoReturn:
+        new_item = new_cacheable(value, expiry)
+
         if self.max_size == self.size:
             self.delete(self.lru)
 
@@ -68,24 +80,25 @@ class Cache:
             self.lru = key
 
         if self.mru is not None:
-            self.mru.next = key
+            tmpru = self.__data.get(self.mru)
+            tmpru.next_key = key
+            new_item.previous_key = self.mru
         self.mru = key
-
-        self.__data[key] = value
+        self.__data[key] = new_item
         self.size += 1
 
     def delete(self, key: Tuple[Any]) -> NoReturn:
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
-            if current_cacheable.previous:
-                current_cacheable.previous.next = current_cacheable.next
+            if current_cacheable.previous_key:
+                self.__data.get(current_cacheable.previous_key).next_key = current_cacheable.next_key
             else:
-                self.lru = current_cacheable.next
+                self.lru = current_cacheable.next_key
 
-            if current_cacheable.next:
-                current_cacheable.next.previous = current_cacheable.previous
+            if current_cacheable.next_key:
+                self.__data.get(current_cacheable.next_key).previous_key = current_cacheable.previous_key
             else:
-                self.mru = current_cacheable.previous
+                self.mru = current_cacheable.previous_key
 
             del self.__data[key]
             self.size -= 1
@@ -104,7 +117,7 @@ class Cache:
         self.mru = None
         self.size = 0
 
-    def stats(self) -> Dict[Text: NumberType]:
+    def stats(self) -> Dict[Text, NumberType]:
         return {
             "hits": self.hits,
             "misses": self.misses,
@@ -123,7 +136,7 @@ class Cache:
     def values(self) -> ValuesView[Any]:
         return self.__data.values()
 
-    def items(self) -> ItemsView[Tuple[Tuple[Any], Any]]:
+    def items(self) -> ItemsView[Tuple[Any], ICacheable]:
         return self.__data.items()
 
     def clean(self, cleaning_frequency_s: NumberType) -> NoReturn:
@@ -139,4 +152,4 @@ class Cache:
         return str(self)
 
     def __str__(self) -> Text:
-        return f"Cache(size=({self.size}/{self.max_size}))"
+        return f"Cache(size=({self.size}/{self.max_size or 'NOMAX'}))"
