@@ -17,8 +17,6 @@ class TimedCacheable(Cacheable):
     def stats(self):
         return {
             "hits": self.hits,
-            "mem_size": self.mem_size,
-            "val_size": self.value_mem_size,
             "expiry": None
             }
 
@@ -27,6 +25,3 @@ class TimedCacheable(Cacheable):
 
     def update_expiration_by(self, time_span: dt.timedelta) -> NoReturn:
         self.expiration += time_span
-
-    def _compute_mem_sizes(self):
-        ...

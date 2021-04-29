@@ -10,13 +10,10 @@ from utils import NumberType
 class Cache:
 
     def __init__(self, max_size: Union[int, None] = None,
-                 max_mem_size: Union[float, None] = None,
                  cleaning_frequency_s: NumberType = 120):
 
         self.__data: Dict[Tuple[Any]: ICacheable] = {}
         self.size: Union[int, None] = 0
-        self.mem_size: float = 0.
-        self.max_mem_size: Union[float, None] = max_mem_size
         self.max_size: int = max_size
         self.last_cleaned: Union[dt.timedelta, None] = None
         self.hits: int = 0
@@ -115,6 +112,11 @@ class Cache:
             "last_cleaned": self.last_cleaned,
         }
 
+    def resize(self, new_size: int) -> NoReturn:
+        while new_size < self.size:
+            self.delete(self.lru)
+        self.max_size = new_size
+
     def keys(self) -> KeysView[Tuple[Any]]:
         return self.__data.keys()
 
@@ -137,4 +139,4 @@ class Cache:
         return str(self)
 
     def __str__(self) -> Text:
-        return f"Cache(size=({self.size}/{self.max_size}), memory size=({self.mem_size}/{self.max_mem_size}))"
+        return f"Cache(size=({self.size}/{self.max_size}))"

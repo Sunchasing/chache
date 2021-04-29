@@ -9,8 +9,6 @@ class ICacheable(metaclass=ABCMeta):
     def __init__(self, value: Any):
         self.value: Any = value
         self.hits: int = 0
-        self.mem_size: float
-        self.value_mem_size: float
         self.previous: Union[Tuple[Any], None] = None
         self.next: Union[Tuple[Any], None] = None
 
@@ -20,8 +18,4 @@ class ICacheable(metaclass=ABCMeta):
 
     @abstractmethod
     def stats(self) -> Dict[Text: Any]:
-        raise NotImplementedError
-
-    @abstractmethod
-    def _compute_mem_sizes(self) -> NoReturn:
         raise NotImplementedError
