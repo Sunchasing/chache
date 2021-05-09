@@ -1,7 +1,7 @@
 
 from src.cache_lib import Cache
 
-@Cache.func_cache # TODO: add functionallity to set timed cache
+@Cache.func_cache
 def pancakes(x, y, z):
     print('called')
     print(x+y+z)
