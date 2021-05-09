@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+
+package cache_transport;
+
+message CacheQuery {
+    google.protobuf.Any query = 1;
+}
+
+message CacheQueryResponse {
+    bool found = 1;
+    google.protobuf.Any response = 2;
+}
+
+message CacheStats{}
+
+message CacheStatsResponse {
+    google.protobuf.Any current_stats = 1;
+}
+
+service CacheService {
+  // Send one text input and receive a boolean response whether it passed the filter or not
+  rpc Query(CacheQuery) returns (CacheQueryResponse) {}
+  rpc Stats(CacheStats) returns (CacheStatsResponse) {}
+}
