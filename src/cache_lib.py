@@ -11,7 +11,7 @@ class Cache:
 
     __func_caches: Dict[Text, 'Cache'] = {}
 
-    def __init__(self, max_size: Union[int, None] = None, cleaning_frequency_s: NumberType = 120):
+    def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
 
         self.__data: Dict[Any, ICacheable] = {}
         self.size: int = 0
@@ -24,26 +24,36 @@ class Cache:
         self.cleaner_thread: threading.Thread = self._create_cleaner_thread(cleaning_frequency_s)
 
     @classmethod
-    def _get_func_cache(cls, func: Callable) -> 'Cache':
+    def _get_func_cache(cls, func: Callable,
+                        max_size: Union[int, None],
+                        cleaning_frequency_s: NumberType) -> 'Cache':
         ret = cls.__func_caches.get(func.__name__)
         if not ret:
-            ret = Cache()
+            ret = Cache(max_size=max_size, cleaning_frequency_s=cleaning_frequency_s)
             cls.__func_caches[func.__name__] = ret
         return ret
 
     @classmethod
-    def func_cache(cls, func: Callable) -> Callable:
-        cache = cls._get_func_cache(func)
+    def sized_func_cache(cls, expiry: dt.date = None,
+                         max_size: Union[int, None] = None,
+                         cleaning_frequency_s: NumberType = 120) -> Callable:
 
-        def wrapper(*args, **kwargs):
-            key = args + tuple(kwargs.values())
-            rv = cache.get(key)
-            if rv == NOTEXISTS:
-                rv = func(*args, **kwargs)
-                cache.put(key, rv)
-            return rv
+        def inner(func: Callable) -> Callable:
+            cache = cls._get_func_cache(func, max_size, cleaning_frequency_s)
 
-        return wrapper
+            def wrapper(*args, **kwargs):
+                key = args + tuple(kwargs.values())
+                rv = cache.get(key)
+                if rv == NOTEXISTS:
+                    rv = func(*args, **kwargs)
+                    cache.put(key, rv, expiry)
+                wrapper.cache_stats = cache.stats()
+                if not hasattr(wrapper, 'wipe_cache'):
+                    wrapper.wipe_cache = cache.wipe
+                return rv
+
+            return wrapper
+        return inner
 
     def _create_cleaner_thread(self, cleaning_frequency_s: NumberType) -> threading.Thread:
         mister_clean = threading.Thread(target=self.clean,
@@ -62,25 +72,29 @@ class Cache:
         return self.__data
 
     def get(self, key: Any) -> Any:
-        # TODO: Unfrick this ugliness
         if self.exists(key):
-            current_cacheable: ICacheable = self.__data[key]
+            current_cacheable = self.__data[key]
+            cc_previous_key = current_cacheable.previous_key
+            cc_next_key = current_cacheable.next_key
 
-            if current_cacheable.previous_key:
-                self.__data.get(current_cacheable.previous_key).next_key = \
-                    current_cacheable.next_key if current_cacheable.next_key is not None else key
+            if cc_previous_key:
+                previous_cacheable = self.__data.get(cc_previous_key)
+                previous_cacheable.next_key = cc_next_key if cc_next_key is not None else key
             else:
-                self.lru = current_cacheable.next_key if current_cacheable.next_key is not None else key
+                self.lru = cc_next_key if cc_next_key is not None else key
 
-            if current_cacheable.next_key:
-                self.__data.get(current_cacheable.next_key).previous_key = current_cacheable.previous_key
+            if cc_next_key:
+                next_cacheable = self.__data.get(cc_next_key)
+                next_cacheable.previous_key = cc_previous_key
                 current_cacheable.previous_key = self.mru
                 current_cacheable.next_key = None
-                self.__data.get(self.mru).next_key = key
+                mru_value = self.__data.get(self.mru)
+                mru_value.next_key = key
                 self.mru = key
 
             self.hits += 1
             return current_cacheable.get_value()
+
         else:
             self.misses += 1
             return NOTEXISTS
@@ -95,9 +109,10 @@ class Cache:
             self.lru = key
 
         if self.mru is not None:
-            tmpru = self.__data.get(self.mru)
-            tmpru.next_key = key
+            mru_value = self.__data.get(self.mru)
+            mru_value.next_key = key
             new_item.previous_key = self.mru
+
         self.mru = key
         self.__data[key] = new_item
         self.size += 1
@@ -105,15 +120,19 @@ class Cache:
     def delete(self, key: Any) -> NoReturn:
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
-            if current_cacheable.previous_key:
-                self.__data.get(current_cacheable.previous_key).next_key = current_cacheable.next_key
+            cc_previous_key = current_cacheable.previous_key
+            cc_next_key = current_cacheable.next_key
+            if cc_previous_key:
+                previous_value = self.__data.get(cc_previous_key)
+                previous_value.next_key = cc_next_key
             else:
-                self.lru = current_cacheable.next_key
+                self.lru = cc_next_key
 
-            if current_cacheable.next_key:
-                self.__data.get(current_cacheable.next_key).previous_key = current_cacheable.previous_key
+            if cc_next_key:
+                next_value = self.__data.get(cc_next_key)
+                next_value.previous_key = cc_previous_key
             else:
-                self.mru = current_cacheable.previous_key
+                self.mru = cc_previous_key
 
             del self.__data[key]
             self.size -= 1
