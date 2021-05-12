@@ -9,7 +9,7 @@ class NotExists(ICacheable):
         super().__init__(None)
 
     def get_value(self) -> Any:
-        raise NotImplementedError
+        return None
 
     def stats(self) -> Dict[Text, Any]:
         raise NotImplementedError

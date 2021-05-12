@@ -18,7 +18,7 @@ class TimedCacheable(Cacheable):
         return {
             "hits": self.hits,
             "expiry": None
-            }
+        }
 
     def set_expiration_to(self, expiration_date: dt.datetime) -> NoReturn:
         self.expiration = expiration_date

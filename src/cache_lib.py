@@ -47,9 +47,11 @@ class Cache:
                 if rv == NOTEXISTS:
                     rv = func(*args, **kwargs)
                     cache.put(key, rv, expiry)
-                wrapper.cache_stats = cache.stats()
                 if not hasattr(wrapper, 'wipe_cache'):
+                    wrapper.cache_stats = cache.stats
                     wrapper.wipe_cache = cache.wipe
+                    wrapper.resize_cache = cache.resize
+                    wrapper.get_cacheable_stats = cache.get_cacheable_stats
                 return rv
 
             return wrapper
@@ -158,6 +160,10 @@ class Cache:
             "accesses": self.accesses,
             "last_cleaned": self.last_cleaned,
         }
+
+    def get_cacheable_stats(self, key: Any) -> Dict[Text, Any]:
+        got_cacheable = self.__data.get(key)
+        return got_cacheable.stats() if got_cacheable else {}
 
     def resize(self, new_size: int) -> NoReturn:
         while new_size < self.size:

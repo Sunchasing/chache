@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Tuple, Union, Dict, Text
+from typing import Any, Union, Dict, Text
 
 
 class ICacheable(metaclass=ABCMeta):
