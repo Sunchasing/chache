@@ -7,7 +7,7 @@ def pancakes(x, y, z):
     print(x+y+z)
 
 
-@Cache.sized_func_cache(None, 10, 102)
+@Cache.sized_func_cache(None, None, 102)
 def pound_cakes(x, y, z):
     print(x+y+z)
 
