@@ -8,11 +8,14 @@ from utils import NumberType
 
 
 class Cache:
-
     __func_caches: Dict[Text, 'Cache'] = {}
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
+        '''
 
+        :param max_size: The maximum number of cacheables to store
+        :param cleaning_frequency_s: The delay between checks for removing cacheables
+        '''
         self.__data: Dict[Any, ICacheable] = {}
         self.size: int = 0
         self.max_size: Union[int, None] = max_size
@@ -27,6 +30,14 @@ class Cache:
     def _get_func_cache(cls, func: Callable,
                         max_size: Union[int, None],
                         cleaning_frequency_s: NumberType) -> 'Cache':
+        '''
+        Instantiates the Cache class for the decorated function
+
+        :param func: The function that we decorate
+        :param max_size: The maximum size for the function's cache
+        :param cleaning_frequency_s: The delay between checks for removing cacheables
+        :return: The decorated function
+        '''
         ret = cls.__func_caches.get(func.__name__)
         if not ret:
             ret = Cache(max_size=max_size, cleaning_frequency_s=cleaning_frequency_s)
@@ -37,6 +48,15 @@ class Cache:
     def sized_func_cache(cls, expiry: dt.date = None,
                          max_size: Union[int, None] = None,
                          cleaning_frequency_s: NumberType = 120) -> Callable:
+        '''
+        The external decorator function.
+        Injects cacheable functions into the passed function.
+
+        :param expiry: The time when the cacheable will be flagged for cleaning
+        :param max_size: The maximum number of cacheables to be stored
+        :param cleaning_frequency_s: The delay between checks for removing cacheables
+        :return: The decorated function with injected functionality
+        '''
 
         def inner(func: Callable) -> Callable:
             cache = cls._get_func_cache(func, max_size, cleaning_frequency_s)
@@ -55,9 +75,16 @@ class Cache:
                 return rv
 
             return wrapper
+
         return inner
 
     def _create_cleaner_thread(self, cleaning_frequency_s: NumberType) -> threading.Thread:
+        '''
+        Creates a cleaner thread that checks if any cacheables should be deleted at set intervals
+
+        :param cleaning_frequency_s: Cleaning interval
+        :return: The cleaning thread
+        '''
         mister_clean = threading.Thread(target=self.clean,
                                         name="cache_cleaner_thread",
                                         args=(cleaning_frequency_s,),
@@ -67,13 +94,27 @@ class Cache:
 
     @property
     def accesses(self) -> int:
+        '''
+
+        :return: Total times the cache has been queried
+        '''
         return self.hits + self.misses
 
     @property
     def data(self) -> Dict[Any, ICacheable]:
+        '''
+
+        :return: Dictionary of currently stored cacheables
+        '''
         return self.__data
 
     def get(self, key: Any) -> Any:
+        '''
+        Gets the value stored in a cacheable and updates the links between in, the lru and the mru.
+
+        :param key: The key to the cacheable we want
+        :return: The value that said cacheable contains or NOTEXISTS, if it doesn't exist
+        '''
         if self.exists(key):
             current_cacheable = self.__data[key]
             cc_previous_key = current_cacheable.previous_key
@@ -102,6 +143,15 @@ class Cache:
             return NOTEXISTS
 
     def put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> NoReturn:
+        '''
+        Inserts a new cacheable in the Cache, updates relevant links, and current size var.
+        If max_size has been reached, the lru gets deleted before the insertion.
+
+        :param key:
+        :param value:
+        :param expiry:
+        :return:
+        '''
         new_item = new_cacheable(value, expiry)
 
         if self.max_size == self.size:
@@ -120,6 +170,11 @@ class Cache:
         self.size += 1
 
     def delete(self, key: Any) -> NoReturn:
+        '''
+        Deletes a specified cacheable and updates relevant links.
+
+        :param key: The key for the cacheable to delete
+        '''
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
             cc_previous_key = current_cacheable.previous_key
@@ -140,20 +195,41 @@ class Cache:
             self.size -= 1
 
     def exists(self, key: Any) -> bool:
+        '''
+        Checks if the specified cacheable is in the Cache
+
+        :param key: Key for the cacheable to check
+        :return: Does it exist
+        '''
         return key in self.__data.keys()
 
     def pop(self, key: Any) -> Any:
+        '''
+        Pops the specified cacheable
+
+        :param key: Key for the cacheable to pop
+        :return:
+        '''
         cached_val = self.get(key)
         self.delete(key)
         return cached_val
 
     def wipe(self) -> NoReturn:
+        '''
+        Removes all data in the Cache, but keeps statistics
+
+        '''
         self.__data = {}
         self.lru = None
         self.mru = None
         self.size = 0
 
     def stats(self) -> Dict[Text, NumberType]:
+        '''
+        Gets the Cache's statistics
+
+        :return: Statistics
+        '''
         return {
             "hits": self.hits,
             "misses": self.misses,
@@ -162,27 +238,59 @@ class Cache:
         }
 
     def get_cacheable_stats(self, key: Any) -> Dict[Text, Any]:
+        '''
+        Gets the statistics for the specified cacheable
+
+        :param key: Key to the cacheable we want to get the stats from
+        :return: Cacheable's stats
+        '''
         got_cacheable = self.__data.get(key)
         return got_cacheable.stats() if got_cacheable else {}
 
     def resize(self, new_size: int) -> NoReturn:
+        '''
+        Changes the Cache's maximum size.
+        If the new size is less than the current size, lrus' get deleted, until they are equal
+
+        :param new_size: New max size to set the Cache to
+        '''
         while new_size < self.size:
             self.delete(self.lru)
         self.max_size = new_size
 
     def keys(self) -> KeysView[Any]:
+        '''
+        Gets all keys for the cacheables
+
+        :return: Keys for each cacheable
+        '''
         return self.__data.keys()
 
     def values(self) -> ValuesView[Any]:
+        '''
+        Returns all currently stored cacheables
+
+        :return: ValueView of cacheables
+        '''
         return self.__data.values()
 
     def items(self) -> ItemsView[Any, ICacheable]:
+        '''
+        Returns all currently stored cacheables and their keys
+
+        :return: ItemsView of cacheables
+        '''
         return self.__data.items()
 
     def clean(self, cleaning_frequency_s: NumberType) -> NoReturn:
+        '''
+        Deletes all expired cacheables
+
+        :param cleaning_frequency_s: Delay between cleaning checks
+        '''
         time.sleep(cleaning_frequency_s)
         current_time = dt.datetime.now()
-        for key, cacheable in self.__data.items():
+        for key, cacheable in self.items():
             if cacheable.expires:
                 if cacheable.expiration >= current_time:
                     self.delete(key)

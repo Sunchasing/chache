@@ -16,3 +16,7 @@ class Cacheable(ICacheable):
             "hits": self.hits,
             "expiry": None
         }
+
+    @property
+    def __name(self):
+        return "Cacheable"
