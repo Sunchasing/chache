@@ -12,6 +12,7 @@ class Cache:
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
         '''
+        Setting cleaning frequency to None will keep the cacheable persistent
 
         :param max_size: The maximum number of cacheables to store
         :param cleaning_frequency_s: The delay between checks for removing cacheables
@@ -31,12 +32,12 @@ class Cache:
                         max_size: Union[int, None],
                         cleaning_frequency_s: NumberType) -> 'Cache':
         '''
-        Instantiates the Cache class for the decorated function
+        Instantiates the Cache class for the decorated function, if one doesn't already exist.
 
         :param func: The function that we decorate
         :param max_size: The maximum size for the function's cache
         :param cleaning_frequency_s: The delay between checks for removing cacheables
-        :return: The decorated function
+        :return: The functions' cache
         '''
         ret = cls.__func_caches.get(func.__name__)
         if not ret:
@@ -49,8 +50,8 @@ class Cache:
                          max_size: Union[int, None] = None,
                          cleaning_frequency_s: NumberType = 120) -> Callable:
         '''
-        The external decorator function.
-        Injects cacheable functions into the passed function.
+        The external function decorator and API for the Cache.
+        Injects cache and cacheable functions into the passed function.
 
         :param expiry: The time when the cacheable will be flagged for cleaning
         :param max_size: The maximum number of cacheables to be stored
@@ -80,7 +81,7 @@ class Cache:
 
     def _create_cleaner_thread(self, cleaning_frequency_s: NumberType) -> threading.Thread:
         '''
-        Creates a cleaner thread that checks if any cacheables should be deleted at set intervals
+        Creates and starts a cleaner thread that checks if any cacheables should be deleted at set intervals.
 
         :param cleaning_frequency_s: Cleaning interval
         :return: The cleaning thread
@@ -260,31 +261,28 @@ class Cache:
 
     def keys(self) -> KeysView[Any]:
         '''
-        Gets all keys for the cacheables
 
-        :return: Keys for each cacheable
+        :return: A view of the caches' keys
         '''
         return self.__data.keys()
 
     def values(self) -> ValuesView[Any]:
         '''
-        Returns all currently stored cacheables
 
-        :return: ValueView of cacheables
+        :return: A view of the cacheable values
         '''
         return self.__data.values()
 
     def items(self) -> ItemsView[Any, ICacheable]:
         '''
-        Returns all currently stored cacheables and their keys
 
-        :return: ItemsView of cacheables
+        :return: A view of the cache items
         '''
         return self.__data.items()
 
     def clean(self, cleaning_frequency_s: NumberType) -> NoReturn:
         '''
-        Deletes all expired cacheables
+        Deletes all expired cacheables. Runs in separate thread.
 
         :param cleaning_frequency_s: Delay between cleaning checks
         '''

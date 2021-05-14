@@ -31,7 +31,6 @@ class TimedCacheable(Cacheable):
         Sets the expiration of this cacheable
 
         :param expiration_date: The new expiration of the cacheable
-        :return:
         '''
         self.expiration = expiration_date
 
@@ -40,7 +39,6 @@ class TimedCacheable(Cacheable):
         Extends the cacheable's expiration
 
         :param time_span: The time to add to the current expiration
-        :return:
         '''
         self.expiration += time_span
 
