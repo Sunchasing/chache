@@ -12,7 +12,7 @@ class Cache:
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
         '''
-        Setting cleaning frequency to None will keep the cacheable persistent
+        Setting max_size to None will set the cache max size to infinite.
 
         :param max_size: The maximum number of cacheables to store
         :param cleaning_frequency_s: The delay between checks for removing cacheables
@@ -96,7 +96,6 @@ class Cache:
     @property
     def accesses(self) -> int:
         '''
-
         :return: Total times the cache has been queried
         '''
         return self.hits + self.misses
@@ -104,7 +103,6 @@ class Cache:
     @property
     def data(self) -> Dict[Any, ICacheable]:
         '''
-
         :return: Dictionary of currently stored cacheables
         '''
         return self.__data
@@ -148,10 +146,9 @@ class Cache:
         Inserts a new cacheable in the Cache, updates relevant links, and current size var.
         If max_size has been reached, the lru gets deleted before the insertion.
 
-        :param key:
-        :param value:
-        :param expiry:
-        :return:
+        :param key: The key to the cacheable
+        :param value: The value of the cacheable
+        :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
         '''
         new_item = new_cacheable(value, expiry)
 
@@ -261,21 +258,18 @@ class Cache:
 
     def keys(self) -> KeysView[Any]:
         '''
-
         :return: A view of the caches' keys
         '''
         return self.__data.keys()
 
     def values(self) -> ValuesView[Any]:
         '''
-
         :return: A view of the cacheable values
         '''
         return self.__data.values()
 
     def items(self) -> ItemsView[Any, ICacheable]:
         '''
-
         :return: A view of the cache items
         '''
         return self.__data.items()
