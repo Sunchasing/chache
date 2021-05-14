@@ -7,7 +7,6 @@ class ICacheable(metaclass=ABCMeta):
 
     def __init__(self, value: Any):
         '''
-
         :param value: The value to be stored in this cacheable
         '''
         self.value: Any = value

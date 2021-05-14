@@ -9,7 +9,6 @@ class TimedCacheable(Cacheable):
 
     def __init__(self, value, expiration: dt.date):
         '''
-
         :param value: The value to be stored in this cacheable
         :param expiration: The expiration time
         '''
