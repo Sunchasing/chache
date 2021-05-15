@@ -18,5 +18,5 @@ class Cacheable(ICacheable):
         }
 
     @property
-    def __name(self):
+    def __name(self):  # pragma: no cover
         return "Cacheable"

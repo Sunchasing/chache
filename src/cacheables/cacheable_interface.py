@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Any, Union, Dict, Text
 
 
-class ICacheable(metaclass=ABCMeta):
+class ICacheable(metaclass=ABCMeta):  # pragma: no cover
     expires: bool
 
     def __init__(self, value: Any):
