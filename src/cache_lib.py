@@ -114,7 +114,7 @@ class Cache:
         :return: The value that said cacheable contains or NOTEXISTS, if it doesn't exist
         '''
 
-        key = self._get_hasheable_key(key)
+        key = self._get_hashable_key(key)
 
         if self.exists(key):
             current_cacheable = self.__data[key]
@@ -153,7 +153,7 @@ class Cache:
         :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
         '''
 
-        key = self._get_hasheable_key(key)
+        key = self._get_hashable_key(key)
 
         new_item = new_cacheable(value, expiry)
 
@@ -179,7 +179,7 @@ class Cache:
         :param key: The key for the cacheable to delete
         '''
 
-        key = self._get_hasheable_key(key)
+        key = self._get_hashable_key(key)
 
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
@@ -208,7 +208,7 @@ class Cache:
         :return: Does it exist
         '''
 
-        key = self._get_hasheable_key(key)
+        key = self._get_hashable_key(key)
 
         return key in self.__data.keys()
 
@@ -253,7 +253,7 @@ class Cache:
         :param key: Key to the cacheable we want to get the stats from
         :return: Cacheable's stats
         '''
-        key = self._get_hasheable_key(key)
+        key = self._get_hashable_key(key)
 
         got_cacheable = self.__data.get(key)
         return got_cacheable.stats() if got_cacheable else {}
@@ -302,7 +302,7 @@ class Cache:
         self.last_cleaned = current_time
 
     @staticmethod
-    def _get_hasheable_key(key: Any):
+    def _get_hashable_key(key: Any):
         try:
             hash(key)
         except TypeError:
