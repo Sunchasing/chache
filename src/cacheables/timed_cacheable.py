@@ -42,5 +42,5 @@ class TimedCacheable(Cacheable):
         self.expiration += time_span
 
     @property
-    def __name(self):
+    def __name(self):  # pragma: no cover
         return "TimedCacheable"

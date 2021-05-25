@@ -13,3 +13,6 @@ class NotExists(ICacheable):
 
     def stats(self) -> Dict[Text, Any]:
         raise NotImplementedError
+
+    def __name(self) -> Text:  # pragma: no cover
+        return "NotExists"

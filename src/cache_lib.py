@@ -69,9 +69,8 @@ class Cache:
                     rv = func(*args, **kwargs)
                     cache.put(key, rv, expiry)
                 if not hasattr(wrapper, 'wipe_cache'):
-                    wrapper.cache_stats = cache.stats
-                    wrapper.wipe_cache = cache.wipe
-                    wrapper.resize_cache = cache.resize
+
+                    wrapper.cache = cache
                     wrapper.get_cacheable_stats = cache.get_cacheable_stats
                 return rv
 
@@ -114,6 +113,9 @@ class Cache:
         :param key: The key to the cacheable we want
         :return: The value that said cacheable contains or NOTEXISTS, if it doesn't exist
         '''
+
+        key = self._get_hashable_key(key)
+
         if self.exists(key):
             current_cacheable = self.__data[key]
             cc_previous_key = current_cacheable.previous_key
@@ -150,6 +152,9 @@ class Cache:
         :param value: The value of the cacheable
         :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
         '''
+
+        key = self._get_hashable_key(key)
+
         new_item = new_cacheable(value, expiry)
 
         if self.max_size == self.size:
@@ -173,6 +178,9 @@ class Cache:
 
         :param key: The key for the cacheable to delete
         '''
+
+        key = self._get_hashable_key(key)
+
         if self.exists(key):
             current_cacheable: ICacheable = self.__data[key]
             cc_previous_key = current_cacheable.previous_key
@@ -199,6 +207,9 @@ class Cache:
         :param key: Key for the cacheable to check
         :return: Does it exist
         '''
+
+        key = self._get_hashable_key(key)
+
         return key in self.__data.keys()
 
     def pop(self, key: Any) -> Any:
@@ -242,6 +253,8 @@ class Cache:
         :param key: Key to the cacheable we want to get the stats from
         :return: Cacheable's stats
         '''
+        key = self._get_hashable_key(key)
+
         got_cacheable = self.__data.get(key)
         return got_cacheable.stats() if got_cacheable else {}
 
@@ -256,19 +269,19 @@ class Cache:
             self.delete(self.lru)
         self.max_size = new_size
 
-    def keys(self) -> KeysView[Any]:
+    def keys(self) -> KeysView[Any]:  # pragma: no cover
         '''
         :return: A view of the caches' keys
         '''
         return self.__data.keys()
 
-    def values(self) -> ValuesView[Any]:
+    def values(self) -> ValuesView[Any]:  # pragma: no cover
         '''
         :return: A view of the cacheable values
         '''
         return self.__data.values()
 
-    def items(self) -> ItemsView[Any, ICacheable]:
+    def items(self) -> ItemsView[Any, ICacheable]:  # pragma: no cover
         '''
         :return: A view of the cache items
         '''
@@ -288,8 +301,16 @@ class Cache:
                     self.delete(key)
         self.last_cleaned = current_time
 
-    def __repr__(self) -> Text:
+    @staticmethod
+    def _get_hashable_key(key: Any):
+        try:
+            hash(key)
+        except TypeError:
+            key = str(key)
+        return key
+
+    def __repr__(self) -> Text:  # pragma: no cover
         return str(self)
 
-    def __str__(self) -> Text:
+    def __str__(self) -> Text:  # pragma: no cover
         return f"Cache(size=({self.size}/{self.max_size or 'NOMAX'}))"
