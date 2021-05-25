@@ -147,11 +147,13 @@ class Cache:
         self.delete(key)
         return cached_val
 
-    def wipe(self) -> NoReturn:
+    def wipe(self) -> int:
+        pre_wipe_size: int = self.size
         self.__data = {}
         self.lru = None
         self.mru = None
         self.size = 0
+        return pre_wipe_size
 
     def stats(self) -> Dict[Text, NumberType]:
         return {
