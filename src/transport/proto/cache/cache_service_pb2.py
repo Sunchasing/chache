@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\x1a\x19google/protobuf/any.proto\"2\n\rCacheGetQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"P\n\x10\x43\x61\x63heGetResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12-\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"w\n\rCachePutQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12#\n\x05value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x13\n\x06\x65xpiry\x18\x03 \x01(\x03H\x00\x88\x01\x01\x42\t\n\x07_expiry\"\'\n\x10\x43\x61\x63hePutResponse\x12\x13\n\x0bput_success\x18\x01 \x01(\x08\"2\n\rCachePopQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"a\n\x10\x43\x61\x63hePopResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12-\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x0f\n\x07\x64\x65leted\x18\x03 \x01(\x08\"5\n\x10\x43\x61\x63heDeleteQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"5\n\x13\x43\x61\x63heDeleteResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\"\x10\n\x0e\x43\x61\x63heWipeQuery\"*\n\x11\x43\x61\x63heWipeResponse\x12\x15\n\rentries_wiped\x18\x01 \x01(\x05\"\x11\n\x0f\x43\x61\x63heStatsQuery\"A\n\x12\x43\x61\x63heStatsResponse\x12+\n\rcurrent_stats\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any2\xe7\x03\n\x0c\x43\x61\x63heService\x12J\n\x03Get\x12\x1e.cache_transport.CacheGetQuery\x1a!.cache_transport.CacheGetResponse\"\x00\x12J\n\x03Put\x12\x1e.cache_transport.CachePutQuery\x1a!.cache_transport.CachePutResponse\"\x00\x12J\n\x03Pop\x12\x1e.cache_transport.CachePopQuery\x1a!.cache_transport.CachePopResponse\"\x00\x12R\n\x06\x44\x65lete\x12!.cache_transport.CacheDeleteQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x12M\n\x04Wipe\x12\x1f.cache_transport.CacheWipeQuery\x1a\".cache_transport.CacheWipeResponse\"\x00\x12P\n\x05Stats\x12 .cache_transport.CacheStatsQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\x1a\x19google/protobuf/any.proto\"2\n\rCacheGetQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"P\n\x10\x43\x61\x63heGetResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12-\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"w\n\rCachePutQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12#\n\x05value\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x13\n\x06\x65xpiry\x18\x03 \x01(\x01H\x00\x88\x01\x01\x42\t\n\x07_expiry\"\'\n\x10\x43\x61\x63hePutResponse\x12\x13\n\x0bput_success\x18\x01 \x01(\x08\"2\n\rCachePopQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"R\n\x10\x43\x61\x63hePopResponse\x12-\n\x0f\x63\x61\x63heable_value\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\"5\n\x10\x43\x61\x63heDeleteQuery\x12!\n\x03key\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"&\n\x13\x43\x61\x63heDeleteResponse\x12\x0f\n\x07\x64\x65leted\x18\x01 \x01(\x08\"\x10\n\x0e\x43\x61\x63heWipeQuery\"*\n\x11\x43\x61\x63heWipeResponse\x12\x15\n\rentries_wiped\x18\x01 \x01(\x05\"\x11\n\x0f\x43\x61\x63heStatsQuery\"A\n\x12\x43\x61\x63heStatsResponse\x12+\n\rcurrent_stats\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any2\xe7\x03\n\x0c\x43\x61\x63heService\x12J\n\x03Get\x12\x1e.cache_transport.CacheGetQuery\x1a!.cache_transport.CacheGetResponse\"\x00\x12J\n\x03Put\x12\x1e.cache_transport.CachePutQuery\x1a!.cache_transport.CachePutResponse\"\x00\x12J\n\x03Pop\x12\x1e.cache_transport.CachePopQuery\x1a!.cache_transport.CachePopResponse\"\x00\x12R\n\x06\x44\x65lete\x12!.cache_transport.CacheDeleteQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x12M\n\x04Wipe\x12\x1f.cache_transport.CacheWipeQuery\x1a\".cache_transport.CacheWipeResponse\"\x00\x12P\n\x05Stats\x12 .cache_transport.CacheStatsQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 
@@ -122,8 +122,8 @@ _CACHEPUTQUERY = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='expiry', full_name='cache_transport.CachePutQuery.expiry', index=2,
-      number=3, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -222,22 +222,15 @@ _CACHEPOPRESPONSE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='found', full_name='cache_transport.CachePopResponse.found', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='cacheable_value', full_name='cache_transport.CachePopResponse.cacheable_value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
+      name='cacheable_value', full_name='cache_transport.CachePopResponse.cacheable_value', index=0,
+      number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='deleted', full_name='cache_transport.CachePopResponse.deleted', index=2,
-      number=3, type=8, cpp_type=7, label=1,
+      name='deleted', full_name='cache_transport.CachePopResponse.deleted', index=1,
+      number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -255,7 +248,7 @@ _CACHEPOPRESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=421,
-  serialized_end=518,
+  serialized_end=503,
 )
 
 
@@ -286,8 +279,8 @@ _CACHEDELETEQUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=520,
-  serialized_end=573,
+  serialized_start=505,
+  serialized_end=558,
 )
 
 
@@ -300,15 +293,8 @@ _CACHEDELETERESPONSE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='found', full_name='cache_transport.CacheDeleteResponse.found', index=0,
+      name='deleted', full_name='cache_transport.CacheDeleteResponse.deleted', index=0,
       number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='deleted', full_name='cache_transport.CacheDeleteResponse.deleted', index=1,
-      number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -325,8 +311,8 @@ _CACHEDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=575,
-  serialized_end=628,
+  serialized_start=560,
+  serialized_end=598,
 )
 
 
@@ -350,8 +336,8 @@ _CACHEWIPEQUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=630,
-  serialized_end=646,
+  serialized_start=600,
+  serialized_end=616,
 )
 
 
@@ -382,8 +368,8 @@ _CACHEWIPERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=648,
-  serialized_end=690,
+  serialized_start=618,
+  serialized_end=660,
 )
 
 
@@ -407,8 +393,8 @@ _CACHESTATSQUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=692,
-  serialized_end=709,
+  serialized_start=662,
+  serialized_end=679,
 )
 
 
@@ -439,8 +425,8 @@ _CACHESTATSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=711,
-  serialized_end=776,
+  serialized_start=681,
+  serialized_end=746,
 )
 
 _CACHEGETQUERY.fields_by_name['key'].message_type = google_dot_protobuf_dot_any__pb2._ANY
@@ -561,8 +547,8 @@ _CACHESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=779,
-  serialized_end=1266,
+  serialized_start=749,
+  serialized_end=1236,
   methods=[
   _descriptor.MethodDescriptor(
     name='Get',

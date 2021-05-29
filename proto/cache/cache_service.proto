@@ -14,7 +14,7 @@ message CacheGetResponse {
 message CachePutQuery{
 	google.protobuf.Any key = 1;
 	google.protobuf.Any value = 2;
-	optional int64 expiry = 3;
+	optional double expiry = 3;
 }
 message CachePutResponse{
 	bool put_success = 1;
@@ -24,17 +24,15 @@ message CachePopQuery{
 	google.protobuf.Any key = 1;
 }
 message CachePopResponse{
-	bool found = 1;
-	google.protobuf.Any cacheable_value = 2;
-	bool deleted = 3;
+	google.protobuf.Any cacheable_value = 1;
+	bool deleted = 2;
 }
 
 message CacheDeleteQuery{
     google.protobuf.Any key = 1;
 }
 message CacheDeleteResponse {
-    bool found = 1;
-    bool deleted = 2;
+    bool deleted = 1;
 }
 
 message CacheWipeQuery{}
