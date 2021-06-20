@@ -1,17 +1,25 @@
+import threading
+from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import datetime
+
+import grpc
 
 from src.cache_lib import Cache
 from src.cacheables import NOTEXISTS
 from src.transport.proto.cache.cache_service_pb2 import *
-from src.transport.proto.cache.cache_service_pb2_grpc import CacheServiceServicer
+from src.transport.proto.cache.cache_service_pb2_grpc import CacheServiceServicer, add_CacheServiceServicer_to_server
 from utils import NumberType
 from utils.logging import *
 
 
-class CacheServer(CacheServiceServicer):
+class CacheService(CacheServiceServicer):
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
         self.cache = Cache(max_size, cleaning_frequency_s)
+        info('Started cache service')
+
+    def __del__(self):
+        info('Stopped cache service')
 
     def Get(self, request: CacheGetQuery, _) -> CacheGetResponse:
         cache_get = self.cache.get(request.key)
@@ -52,3 +60,12 @@ class CacheServer(CacheServiceServicer):
         stats_response = CacheStatsResponse(current_stats=cache_stats)
         info(f"Stats method invoked")
         return stats_response
+
+
+def start_server(service: CacheService, port: int, max_workers: int = 10) -> grpc.Server:
+    server = grpc.server(ThreadPoolExecutor(max_workers=max_workers))
+    add_CacheServiceServicer_to_server(server=server, servicer=service)
+    server.add_insecure_port(f'[::]:{port}')
+    server.start()
+    threading.Thread(target=server.wait_for_termination, daemon=True).start()
+    return server

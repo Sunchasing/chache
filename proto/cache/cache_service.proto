@@ -54,7 +54,7 @@ service CacheService {
   // Pops cacheable at key position
   rpc Pop(CachePopQuery) returns (CachePopResponse) {}
   // Deletes a cacheable at key position
-  rpc Delete(CacheDeleteQuery) returns (CacheStatsResponse) {}
+  rpc Delete(CacheDeleteQuery) returns (CacheDeleteResponse) {}
   // Deletes all cacheables, keeps stats
   rpc Wipe(CacheWipeQuery) returns (CacheWipeResponse) {}
   // Gets cache stats

@@ -32,7 +32,7 @@ class CacheServiceStub(object):
         self.Delete = channel.unary_unary(
                 '/cache_transport.CacheService/Delete',
                 request_serializer=cache_dot_cache__service__pb2.CacheDeleteQuery.SerializeToString,
-                response_deserializer=cache_dot_cache__service__pb2.CacheStatsResponse.FromString,
+                response_deserializer=cache_dot_cache__service__pb2.CacheDeleteResponse.FromString,
                 )
         self.Wipe = channel.unary_unary(
                 '/cache_transport.CacheService/Wipe',
@@ -112,7 +112,7 @@ def add_CacheServiceServicer_to_server(servicer, server):
             'Delete': grpc.unary_unary_rpc_method_handler(
                     servicer.Delete,
                     request_deserializer=cache_dot_cache__service__pb2.CacheDeleteQuery.FromString,
-                    response_serializer=cache_dot_cache__service__pb2.CacheStatsResponse.SerializeToString,
+                    response_serializer=cache_dot_cache__service__pb2.CacheDeleteResponse.SerializeToString,
             ),
             'Wipe': grpc.unary_unary_rpc_method_handler(
                     servicer.Wipe,
@@ -198,7 +198,7 @@ class CacheService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/cache_transport.CacheService/Delete',
             cache_dot_cache__service__pb2.CacheDeleteQuery.SerializeToString,
-            cache_dot_cache__service__pb2.CacheStatsResponse.FromString,
+            cache_dot_cache__service__pb2.CacheDeleteResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
