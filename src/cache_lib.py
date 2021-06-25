@@ -1,7 +1,7 @@
 import datetime as dt
 import threading
 import time
-from typing import Text, Dict, Any, Union, NoReturn, KeysView, ValuesView, ItemsView, Callable
+from typing import Text, Dict, Any, Union, NoReturn, KeysView, ValuesView, ItemsView, Callable, Tuple
 
 from src.cacheables import ICacheable, NOTEXISTS, new_cacheable
 from utils import NumberType
@@ -69,9 +69,7 @@ class Cache:
                     rv = func(*args, **kwargs)
                     cache.put(key, rv, expiry)
                 if not hasattr(wrapper, 'wipe_cache'):
-
                     wrapper.cache = cache
-                    wrapper.get_cacheable_stats = cache.get_cacheable_stats
                 return rv
 
             return wrapper
@@ -114,9 +112,8 @@ class Cache:
         :return: The value that said cacheable contains or NOTEXISTS, if it doesn't exist
         '''
 
-        key = self._get_hashable_key(key)
-
         if self.exists(key):
+            key = self._get_hashable_key(key)
             current_cacheable = self.__data[key]
             cc_previous_key = current_cacheable.previous_key
             cc_next_key = current_cacheable.next_key
@@ -143,22 +140,9 @@ class Cache:
             self.misses += 1
             return NOTEXISTS
 
-    def put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> NoReturn:
-        '''
-        Inserts a new cacheable in the Cache, updates relevant links, and current size var.
-        If max_size has been reached, the lru gets deleted before the insertion.
-
-        :param key: The key to the cacheable
-        :param value: The value of the cacheable
-        :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
-        '''
-
-        key = self._get_hashable_key(key)
+    def _put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None):
 
         new_item = new_cacheable(value, expiry)
-
-        if self.max_size == self.size:
-            self.delete(self.lru)
 
         if self.lru is None:
             self.lru = key
@@ -170,35 +154,63 @@ class Cache:
 
         self.mru = key
         self.__data[key] = new_item
-        self.size += 1
 
-    def delete(self, key: Any) -> NoReturn:
+    def put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> bool:
+        '''
+        Inserts a new cacheable in the Cache, updates relevant links, and current size var.
+        If max_size has been reached, the lru gets deleted before the insertion.
+
+        :param key: The key to the cacheable
+        :param value: The value of the cacheable
+        :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
+        '''
+        key = self._get_hashable_key(key)
+        if self.exists(key):
+            return False
+        if self.max_size == self.size:
+            self.delete(self.lru)
+        self._put(key, value, expiry)
+        self.size += 1
+        return True
+
+    def update(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> bool:
+        key = self._get_hashable_key(key)
+        if not self.exists(key):
+            return False
+
+        self._put(key, value, expiry)
+        return True
+
+    def delete(self, key: Any) -> bool:
         '''
         Deletes a specified cacheable and updates relevant links.
 
         :param key: The key for the cacheable to delete
         '''
 
+        if not self.exists(key):
+            return False
+
         key = self._get_hashable_key(key)
+        current_cacheable: ICacheable = self.__data[key]
+        cc_previous_key = current_cacheable.previous_key
+        cc_next_key = current_cacheable.next_key
+        if cc_previous_key:
+            previous_value = self.__data.get(cc_previous_key)
+            previous_value.next_key = cc_next_key
+        else:
+            self.lru = cc_next_key
 
-        if self.exists(key):
-            current_cacheable: ICacheable = self.__data[key]
-            cc_previous_key = current_cacheable.previous_key
-            cc_next_key = current_cacheable.next_key
-            if cc_previous_key:
-                previous_value = self.__data.get(cc_previous_key)
-                previous_value.next_key = cc_next_key
-            else:
-                self.lru = cc_next_key
+        if cc_next_key:
+            next_value = self.__data.get(cc_next_key)
+            next_value.previous_key = cc_previous_key
+        else:
+            self.mru = cc_previous_key
 
-            if cc_next_key:
-                next_value = self.__data.get(cc_next_key)
-                next_value.previous_key = cc_previous_key
-            else:
-                self.mru = cc_previous_key
+        del self.__data[key]
+        self.size -= 1
+        return True
 
-            del self.__data[key]
-            self.size -= 1
 
     def exists(self, key: Any) -> bool:
         '''
@@ -212,7 +224,7 @@ class Cache:
 
         return key in self.__data.keys()
 
-    def pop(self, key: Any) -> Any:
+    def pop(self, key: Any) -> Tuple[Any, bool]:
         '''
         Pops the specified cacheable
 
@@ -220,18 +232,20 @@ class Cache:
         :return:
         '''
         cached_val = self.get(key)
-        self.delete(key)
-        return cached_val
+        deleted = self.delete(key)
+        return cached_val, deleted
 
-    def wipe(self) -> NoReturn:
+    def wipe(self) -> int:
         '''
         Removes all data in the Cache, but keeps statistics
 
         '''
+        pre_wipe_size: int = self.size
         self.__data = {}
         self.lru = None
         self.mru = None
         self.size = 0
+        return pre_wipe_size
 
     def stats(self) -> Dict[Text, NumberType]:
         '''

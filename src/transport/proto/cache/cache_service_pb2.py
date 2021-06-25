@@ -11,7 +11,6 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -20,25 +19,24 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\x1a\x19google/protobuf/any.proto\"1\n\nCacheQuery\x12#\n\x05query\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any\"K\n\x12\x43\x61\x63heQueryResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12&\n\x08response\x18\x02 \x01(\x0b\x32\x14.google.protobuf.Any\"\x0c\n\nCacheStats\"A\n\x12\x43\x61\x63heStatsResponse\x12+\n\rcurrent_stats\x18\x01 \x01(\x0b\x32\x14.google.protobuf.Any2\xa8\x01\n\x0c\x43\x61\x63heService\x12K\n\x05Query\x12\x1b.cache_transport.CacheQuery\x1a#.cache_transport.CacheQueryResponse\"\x00\x12K\n\x05Stats\x12\x1b.cache_transport.CacheStats\x1a#.cache_transport.CacheStatsResponse\"\x00\x62\x06proto3'
-  ,
-  dependencies=[google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
+  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\"\x1c\n\rCacheGetQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\":\n\x10\x43\x61\x63heGetResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0c\"K\n\rCachePutQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x13\n\x06\x65xpiry\x18\x03 \x01(\x01H\x00\x88\x01\x01\x42\t\n\x07_expiry\"\'\n\x10\x43\x61\x63hePutResponse\x12\x13\n\x0bput_success\x18\x01 \x01(\x08\"\x1c\n\rCachePopQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"<\n\x10\x43\x61\x63hePopResponse\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x01 \x01(\x0c\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\"\x1f\n\x10\x43\x61\x63heDeleteQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"&\n\x13\x43\x61\x63heDeleteResponse\x12\x0f\n\x07\x64\x65leted\x18\x01 \x01(\x08\"\x10\n\x0e\x43\x61\x63heWipeQuery\"*\n\x11\x43\x61\x63heWipeResponse\x12\x15\n\rentries_wiped\x18\x01 \x01(\x05\"\x11\n\x0f\x43\x61\x63heStatsQuery\"+\n\x12\x43\x61\x63heStatsResponse\x12\x15\n\rcurrent_stats\x18\x01 \x01(\x0c\x32\xe8\x03\n\x0c\x43\x61\x63heService\x12J\n\x03Get\x12\x1e.cache_transport.CacheGetQuery\x1a!.cache_transport.CacheGetResponse\"\x00\x12J\n\x03Put\x12\x1e.cache_transport.CachePutQuery\x1a!.cache_transport.CachePutResponse\"\x00\x12J\n\x03Pop\x12\x1e.cache_transport.CachePopQuery\x1a!.cache_transport.CachePopResponse\"\x00\x12S\n\x06\x44\x65lete\x12!.cache_transport.CacheDeleteQuery\x1a$.cache_transport.CacheDeleteResponse\"\x00\x12M\n\x04Wipe\x12\x1f.cache_transport.CacheWipeQuery\x1a\".cache_transport.CacheWipeResponse\"\x00\x12P\n\x05Stats\x12 .cache_transport.CacheStatsQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x62\x06proto3'
+)
 
 
 
 
-_CACHEQUERY = _descriptor.Descriptor(
-  name='CacheQuery',
-  full_name='cache_transport.CacheQuery',
+_CACHEGETQUERY = _descriptor.Descriptor(
+  name='CacheGetQuery',
+  full_name='cache_transport.CacheGetQuery',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='query', full_name='cache_transport.CacheQuery.query', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='key', full_name='cache_transport.CacheGetQuery.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -54,30 +52,30 @@ _CACHEQUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=73,
-  serialized_end=122,
+  serialized_start=46,
+  serialized_end=74,
 )
 
 
-_CACHEQUERYRESPONSE = _descriptor.Descriptor(
-  name='CacheQueryResponse',
-  full_name='cache_transport.CacheQueryResponse',
+_CACHEGETRESPONSE = _descriptor.Descriptor(
+  name='CacheGetResponse',
+  full_name='cache_transport.CacheGetResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='found', full_name='cache_transport.CacheQueryResponse.found', index=0,
+      name='found', full_name='cache_transport.CacheGetResponse.found', index=0,
       number=1, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='response', full_name='cache_transport.CacheQueryResponse.response', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='cacheable_value', full_name='cache_transport.CacheGetResponse.cacheable_value', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -93,14 +91,232 @@ _CACHEQUERYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=124,
-  serialized_end=199,
+  serialized_start=76,
+  serialized_end=134,
 )
 
 
-_CACHESTATS = _descriptor.Descriptor(
-  name='CacheStats',
-  full_name='cache_transport.CacheStats',
+_CACHEPUTQUERY = _descriptor.Descriptor(
+  name='CachePutQuery',
+  full_name='cache_transport.CachePutQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='cache_transport.CachePutQuery.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='cache_transport.CachePutQuery.value', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='expiry', full_name='cache_transport.CachePutQuery.expiry', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_expiry', full_name='cache_transport.CachePutQuery._expiry',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=136,
+  serialized_end=211,
+)
+
+
+_CACHEPUTRESPONSE = _descriptor.Descriptor(
+  name='CachePutResponse',
+  full_name='cache_transport.CachePutResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='put_success', full_name='cache_transport.CachePutResponse.put_success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=213,
+  serialized_end=252,
+)
+
+
+_CACHEPOPQUERY = _descriptor.Descriptor(
+  name='CachePopQuery',
+  full_name='cache_transport.CachePopQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='cache_transport.CachePopQuery.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=254,
+  serialized_end=282,
+)
+
+
+_CACHEPOPRESPONSE = _descriptor.Descriptor(
+  name='CachePopResponse',
+  full_name='cache_transport.CachePopResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cacheable_value', full_name='cache_transport.CachePopResponse.cacheable_value', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='deleted', full_name='cache_transport.CachePopResponse.deleted', index=1,
+      number=2, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=284,
+  serialized_end=344,
+)
+
+
+_CACHEDELETEQUERY = _descriptor.Descriptor(
+  name='CacheDeleteQuery',
+  full_name='cache_transport.CacheDeleteQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='cache_transport.CacheDeleteQuery.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=346,
+  serialized_end=377,
+)
+
+
+_CACHEDELETERESPONSE = _descriptor.Descriptor(
+  name='CacheDeleteResponse',
+  full_name='cache_transport.CacheDeleteResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='deleted', full_name='cache_transport.CacheDeleteResponse.deleted', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=379,
+  serialized_end=417,
+)
+
+
+_CACHEWIPEQUERY = _descriptor.Descriptor(
+  name='CacheWipeQuery',
+  full_name='cache_transport.CacheWipeQuery',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -118,8 +334,65 @@ _CACHESTATS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=201,
-  serialized_end=213,
+  serialized_start=419,
+  serialized_end=435,
+)
+
+
+_CACHEWIPERESPONSE = _descriptor.Descriptor(
+  name='CacheWipeResponse',
+  full_name='cache_transport.CacheWipeResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='entries_wiped', full_name='cache_transport.CacheWipeResponse.entries_wiped', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=437,
+  serialized_end=479,
+)
+
+
+_CACHESTATSQUERY = _descriptor.Descriptor(
+  name='CacheStatsQuery',
+  full_name='cache_transport.CacheStatsQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=481,
+  serialized_end=498,
 )
 
 
@@ -133,8 +406,8 @@ _CACHESTATSRESPONSE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='current_stats', full_name='cache_transport.CacheStatsResponse.current_stats', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -150,39 +423,103 @@ _CACHESTATSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=215,
-  serialized_end=280,
+  serialized_start=500,
+  serialized_end=543,
 )
 
-_CACHEQUERY.fields_by_name['query'].message_type = google_dot_protobuf_dot_any__pb2._ANY
-_CACHEQUERYRESPONSE.fields_by_name['response'].message_type = google_dot_protobuf_dot_any__pb2._ANY
-_CACHESTATSRESPONSE.fields_by_name['current_stats'].message_type = google_dot_protobuf_dot_any__pb2._ANY
-DESCRIPTOR.message_types_by_name['CacheQuery'] = _CACHEQUERY
-DESCRIPTOR.message_types_by_name['CacheQueryResponse'] = _CACHEQUERYRESPONSE
-DESCRIPTOR.message_types_by_name['CacheStats'] = _CACHESTATS
+_CACHEPUTQUERY.oneofs_by_name['_expiry'].fields.append(
+  _CACHEPUTQUERY.fields_by_name['expiry'])
+_CACHEPUTQUERY.fields_by_name['expiry'].containing_oneof = _CACHEPUTQUERY.oneofs_by_name['_expiry']
+DESCRIPTOR.message_types_by_name['CacheGetQuery'] = _CACHEGETQUERY
+DESCRIPTOR.message_types_by_name['CacheGetResponse'] = _CACHEGETRESPONSE
+DESCRIPTOR.message_types_by_name['CachePutQuery'] = _CACHEPUTQUERY
+DESCRIPTOR.message_types_by_name['CachePutResponse'] = _CACHEPUTRESPONSE
+DESCRIPTOR.message_types_by_name['CachePopQuery'] = _CACHEPOPQUERY
+DESCRIPTOR.message_types_by_name['CachePopResponse'] = _CACHEPOPRESPONSE
+DESCRIPTOR.message_types_by_name['CacheDeleteQuery'] = _CACHEDELETEQUERY
+DESCRIPTOR.message_types_by_name['CacheDeleteResponse'] = _CACHEDELETERESPONSE
+DESCRIPTOR.message_types_by_name['CacheWipeQuery'] = _CACHEWIPEQUERY
+DESCRIPTOR.message_types_by_name['CacheWipeResponse'] = _CACHEWIPERESPONSE
+DESCRIPTOR.message_types_by_name['CacheStatsQuery'] = _CACHESTATSQUERY
 DESCRIPTOR.message_types_by_name['CacheStatsResponse'] = _CACHESTATSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-CacheQuery = _reflection.GeneratedProtocolMessageType('CacheQuery', (_message.Message,), {
-  'DESCRIPTOR' : _CACHEQUERY,
+CacheGetQuery = _reflection.GeneratedProtocolMessageType('CacheGetQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEGETQUERY,
   '__module__' : 'cache.cache_service_pb2'
-  # @@protoc_insertion_point(class_scope:cache_transport.CacheQuery)
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheGetQuery)
   })
-_sym_db.RegisterMessage(CacheQuery)
+_sym_db.RegisterMessage(CacheGetQuery)
 
-CacheQueryResponse = _reflection.GeneratedProtocolMessageType('CacheQueryResponse', (_message.Message,), {
-  'DESCRIPTOR' : _CACHEQUERYRESPONSE,
+CacheGetResponse = _reflection.GeneratedProtocolMessageType('CacheGetResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEGETRESPONSE,
   '__module__' : 'cache.cache_service_pb2'
-  # @@protoc_insertion_point(class_scope:cache_transport.CacheQueryResponse)
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheGetResponse)
   })
-_sym_db.RegisterMessage(CacheQueryResponse)
+_sym_db.RegisterMessage(CacheGetResponse)
 
-CacheStats = _reflection.GeneratedProtocolMessageType('CacheStats', (_message.Message,), {
-  'DESCRIPTOR' : _CACHESTATS,
+CachePutQuery = _reflection.GeneratedProtocolMessageType('CachePutQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEPUTQUERY,
   '__module__' : 'cache.cache_service_pb2'
-  # @@protoc_insertion_point(class_scope:cache_transport.CacheStats)
+  # @@protoc_insertion_point(class_scope:cache_transport.CachePutQuery)
   })
-_sym_db.RegisterMessage(CacheStats)
+_sym_db.RegisterMessage(CachePutQuery)
+
+CachePutResponse = _reflection.GeneratedProtocolMessageType('CachePutResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEPUTRESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CachePutResponse)
+  })
+_sym_db.RegisterMessage(CachePutResponse)
+
+CachePopQuery = _reflection.GeneratedProtocolMessageType('CachePopQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEPOPQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CachePopQuery)
+  })
+_sym_db.RegisterMessage(CachePopQuery)
+
+CachePopResponse = _reflection.GeneratedProtocolMessageType('CachePopResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEPOPRESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CachePopResponse)
+  })
+_sym_db.RegisterMessage(CachePopResponse)
+
+CacheDeleteQuery = _reflection.GeneratedProtocolMessageType('CacheDeleteQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEDELETEQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheDeleteQuery)
+  })
+_sym_db.RegisterMessage(CacheDeleteQuery)
+
+CacheDeleteResponse = _reflection.GeneratedProtocolMessageType('CacheDeleteResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEDELETERESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheDeleteResponse)
+  })
+_sym_db.RegisterMessage(CacheDeleteResponse)
+
+CacheWipeQuery = _reflection.GeneratedProtocolMessageType('CacheWipeQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEWIPEQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheWipeQuery)
+  })
+_sym_db.RegisterMessage(CacheWipeQuery)
+
+CacheWipeResponse = _reflection.GeneratedProtocolMessageType('CacheWipeResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEWIPERESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheWipeResponse)
+  })
+_sym_db.RegisterMessage(CacheWipeResponse)
+
+CacheStatsQuery = _reflection.GeneratedProtocolMessageType('CacheStatsQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHESTATSQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheStatsQuery)
+  })
+_sym_db.RegisterMessage(CacheStatsQuery)
 
 CacheStatsResponse = _reflection.GeneratedProtocolMessageType('CacheStatsResponse', (_message.Message,), {
   'DESCRIPTOR' : _CACHESTATSRESPONSE,
@@ -200,25 +537,65 @@ _CACHESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=283,
-  serialized_end=451,
+  serialized_start=546,
+  serialized_end=1034,
   methods=[
   _descriptor.MethodDescriptor(
-    name='Query',
-    full_name='cache_transport.CacheService.Query',
+    name='Get',
+    full_name='cache_transport.CacheService.Get',
     index=0,
     containing_service=None,
-    input_type=_CACHEQUERY,
-    output_type=_CACHEQUERYRESPONSE,
+    input_type=_CACHEGETQUERY,
+    output_type=_CACHEGETRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Put',
+    full_name='cache_transport.CacheService.Put',
+    index=1,
+    containing_service=None,
+    input_type=_CACHEPUTQUERY,
+    output_type=_CACHEPUTRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Pop',
+    full_name='cache_transport.CacheService.Pop',
+    index=2,
+    containing_service=None,
+    input_type=_CACHEPOPQUERY,
+    output_type=_CACHEPOPRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Delete',
+    full_name='cache_transport.CacheService.Delete',
+    index=3,
+    containing_service=None,
+    input_type=_CACHEDELETEQUERY,
+    output_type=_CACHEDELETERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Wipe',
+    full_name='cache_transport.CacheService.Wipe',
+    index=4,
+    containing_service=None,
+    input_type=_CACHEWIPEQUERY,
+    output_type=_CACHEWIPERESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
     name='Stats',
     full_name='cache_transport.CacheService.Stats',
-    index=1,
+    index=5,
     containing_service=None,
-    input_type=_CACHESTATS,
+    input_type=_CACHESTATSQUERY,
     output_type=_CACHESTATSRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,

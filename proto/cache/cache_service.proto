@@ -1,25 +1,61 @@
 syntax = "proto3";
-import "google/protobuf/any.proto";
 
 package cache_transport;
 
-message CacheQuery {
-    google.protobuf.Any query = 1;
+message CacheGetQuery {
+    string key = 1;
 }
-
-message CacheQueryResponse {
+message CacheGetResponse {
     bool found = 1;
-    google.protobuf.Any response = 2;
+    bytes cacheable_value = 2;
 }
 
-message CacheStats{}
+message CachePutQuery{
+	string key = 1;
+	bytes value = 2;
+	optional double expiry = 3;
+}
+message CachePutResponse{
+	bool put_success = 1;
+}
 
+message CachePopQuery{
+	string key = 1;
+}
+message CachePopResponse{
+	bytes cacheable_value = 1;
+	bool deleted = 2;
+}
+
+message CacheDeleteQuery{
+    string key = 1;
+}
+message CacheDeleteResponse {
+    bool deleted = 1;
+}
+
+message CacheWipeQuery{}
+message CacheWipeResponse{
+    int32 entries_wiped = 1;
+}
+
+message CacheStatsQuery{}
 message CacheStatsResponse {
-    google.protobuf.Any current_stats = 1;
+    bytes current_stats = 1;
 }
+
 
 service CacheService {
-  // Send one text input and receive a boolean response whether it passed the filter or not
-  rpc Query(CacheQuery) returns (CacheQueryResponse) {}
-  rpc Stats(CacheStats) returns (CacheStatsResponse) {}
+  // Gets the cacheable's value at key position, if it exists
+  rpc Get(CacheGetQuery) returns (CacheGetResponse) {}
+  // Caches a k:v pair in the cache
+  rpc Put(CachePutQuery) returns (CachePutResponse) {}
+  // Pops cacheable at key position
+  rpc Pop(CachePopQuery) returns (CachePopResponse) {}
+  // Deletes a cacheable at key position
+  rpc Delete(CacheDeleteQuery) returns (CacheDeleteResponse) {}
+  // Deletes all cacheables, keeps stats
+  rpc Wipe(CacheWipeQuery) returns (CacheWipeResponse) {}
+  // Gets cache stats
+  rpc Stats(CacheStatsQuery) returns (CacheStatsResponse) {}
 }

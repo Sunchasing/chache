@@ -1,4 +1,3 @@
-
 from src.cache_lib import Cache
 
 
@@ -15,23 +14,11 @@ def main():
     pancakes(1, 5, 4)
     pancakes(2, 2, 4)
     pancakes(1, 5, 4)
-    print(pancakes.cache_stats)
-    print(pancakes)
+    print(pancakes.cache.stats())
     pound_cakes(1, 5, 4)
     pound_cakes(2, 2, 4)
     pound_cakes(1, 5, 4)
-    print(pound_cakes.cache_stats)
-    print(pound_cakes)
-    pancakes(1, 5, 4)
-    pancakes(2, 2, 4)
-    pancakes(1, 5, 4)
-    print(pancakes.cache_stats)
-    print(pancakes)
-    pound_cakes(1, 5, 4)
-    pound_cakes(2, 2, 4)
-    pound_cakes(1, 5, 4)
-    print(pound_cakes.cache_stats)
-    print(pound_cakes)
+    print(pound_cakes.get_cacheable_stats((1, 5, 4)))
 
 
 if __name__ == "__main__":
