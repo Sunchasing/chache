@@ -1,6 +1,6 @@
+import pickle
 import threading
 from concurrent.futures.thread import ThreadPoolExecutor
-from datetime import datetime
 
 import grpc
 
@@ -23,14 +23,16 @@ class CacheService(CacheServiceServicer):
 
     def Get(self, request: CacheGetQuery, _) -> CacheGetResponse:
         cache_get = self.cache.get(request.key)
-        exists = cache_get is NOTEXISTS
-        cache_get = None if not exists else cache_get
+        exists = cache_get is not NOTEXISTS
+        if not exists:
+            cache_get = pickle.dumps(cache_get)
+
         get_response = CacheGetResponse(found=exists, cacheable_value=cache_get)
         info(f"Get method invoked with key={request.key}, hit={exists}")
         return get_response
 
     def Put(self, request: CachePutQuery, _) -> CachePutResponse:
-        actual_expiry = datetime.fromtimestamp(request.expiry)
+        actual_expiry = datetime.datetime.fromtimestamp(request.expiry)  # integrated datetime? in this economy?
         cache_put = self.cache.put(request.key, request.value, actual_expiry)
         put_response = CachePutResponse(put_success=cache_put)
         info(f"Put method invoked with key={request.key}, expiry={actual_expiry}, success={cache_put}")
@@ -57,7 +59,8 @@ class CacheService(CacheServiceServicer):
 
     def Stats(self, _: CacheStatsResponse, __) -> CacheStatsResponse:
         cache_stats = self.cache.stats()
-        stats_response = CacheStatsResponse(current_stats=cache_stats)
+        serialized_stats = pickle.dumps(cache_stats)
+        stats_response = CacheStatsResponse(current_stats=serialized_stats)
         info(f"Stats method invoked")
         return stats_response
 

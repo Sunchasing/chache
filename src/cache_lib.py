@@ -70,7 +70,6 @@ class Cache:
                     cache.put(key, rv, expiry)
                 if not hasattr(wrapper, 'wipe_cache'):
                     wrapper.cache = cache
-                    wrapper.get_cacheable_stats = cache.get_cacheable_stats
                 return rv
 
             return wrapper

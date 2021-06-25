@@ -1,19 +1,18 @@
 syntax = "proto3";
-import "google/protobuf/any.proto";
 
 package cache_transport;
 
 message CacheGetQuery {
-    google.protobuf.Any key = 1;
+    string key = 1;
 }
 message CacheGetResponse {
     bool found = 1;
-    google.protobuf.Any cacheable_value = 2;
+    bytes cacheable_value = 2;
 }
 
 message CachePutQuery{
-	google.protobuf.Any key = 1;
-	google.protobuf.Any value = 2;
+	string key = 1;
+	bytes value = 2;
 	optional double expiry = 3;
 }
 message CachePutResponse{
@@ -21,15 +20,15 @@ message CachePutResponse{
 }
 
 message CachePopQuery{
-	google.protobuf.Any key = 1;
+	string key = 1;
 }
 message CachePopResponse{
-	google.protobuf.Any cacheable_value = 1;
+	bytes cacheable_value = 1;
 	bool deleted = 2;
 }
 
 message CacheDeleteQuery{
-    google.protobuf.Any key = 1;
+    string key = 1;
 }
 message CacheDeleteResponse {
     bool deleted = 1;
@@ -42,7 +41,7 @@ message CacheWipeResponse{
 
 message CacheStatsQuery{}
 message CacheStatsResponse {
-    google.protobuf.Any current_stats = 1;
+    bytes current_stats = 1;
 }
 
 
