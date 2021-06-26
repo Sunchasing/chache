@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import NoReturn, Text
+from typing import NoReturn
 
 from src.cacheables.cacheable import Cacheable
 

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\"\x1c\n\rCacheGetQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\":\n\x10\x43\x61\x63heGetResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0c\"K\n\rCachePutQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x13\n\x06\x65xpiry\x18\x03 \x01(\x01H\x00\x88\x01\x01\x42\t\n\x07_expiry\"\'\n\x10\x43\x61\x63hePutResponse\x12\x13\n\x0bput_success\x18\x01 \x01(\x08\"\x1c\n\rCachePopQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"<\n\x10\x43\x61\x63hePopResponse\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x01 \x01(\x0c\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\"\x1f\n\x10\x43\x61\x63heDeleteQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"&\n\x13\x43\x61\x63heDeleteResponse\x12\x0f\n\x07\x64\x65leted\x18\x01 \x01(\x08\"\x10\n\x0e\x43\x61\x63heWipeQuery\"*\n\x11\x43\x61\x63heWipeResponse\x12\x15\n\rentries_wiped\x18\x01 \x01(\x05\"\x11\n\x0f\x43\x61\x63heStatsQuery\"+\n\x12\x43\x61\x63heStatsResponse\x12\x15\n\rcurrent_stats\x18\x01 \x01(\x0c\x32\xe8\x03\n\x0c\x43\x61\x63heService\x12J\n\x03Get\x12\x1e.cache_transport.CacheGetQuery\x1a!.cache_transport.CacheGetResponse\"\x00\x12J\n\x03Put\x12\x1e.cache_transport.CachePutQuery\x1a!.cache_transport.CachePutResponse\"\x00\x12J\n\x03Pop\x12\x1e.cache_transport.CachePopQuery\x1a!.cache_transport.CachePopResponse\"\x00\x12S\n\x06\x44\x65lete\x12!.cache_transport.CacheDeleteQuery\x1a$.cache_transport.CacheDeleteResponse\"\x00\x12M\n\x04Wipe\x12\x1f.cache_transport.CacheWipeQuery\x1a\".cache_transport.CacheWipeResponse\"\x00\x12P\n\x05Stats\x12 .cache_transport.CacheStatsQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x19\x63\x61\x63he/cache_service.proto\x12\x0f\x63\x61\x63he_transport\"\x1c\n\rCacheGetQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\":\n\x10\x43\x61\x63heGetResponse\x12\r\n\x05\x66ound\x18\x01 \x01(\x08\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x02 \x01(\x0c\"K\n\rCachePutQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x0c\x12\x13\n\x06\x65xpiry\x18\x03 \x01(\x01H\x00\x88\x01\x01\x42\t\n\x07_expiry\"\'\n\x10\x43\x61\x63hePutResponse\x12\x13\n\x0bput_success\x18\x01 \x01(\x08\"\x1c\n\rCachePopQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"<\n\x10\x43\x61\x63hePopResponse\x12\x17\n\x0f\x63\x61\x63heable_value\x18\x01 \x01(\x0c\x12\x0f\n\x07\x64\x65leted\x18\x02 \x01(\x08\"\x1f\n\x10\x43\x61\x63heDeleteQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"&\n\x13\x43\x61\x63heDeleteResponse\x12\x0f\n\x07\x64\x65leted\x18\x01 \x01(\x08\"\x10\n\x0e\x43\x61\x63heWipeQuery\"*\n\x11\x43\x61\x63heWipeResponse\x12\x15\n\rentries_wiped\x18\x01 \x01(\x05\"\x11\n\x0f\x43\x61\x63heStatsQuery\"+\n\x12\x43\x61\x63heStatsResponse\x12\x15\n\rcurrent_stats\x18\x01 \x01(\x0c\"\"\n\x13\x43\x61\x63heableStatsQuery\x12\x0b\n\x03key\x18\x01 \x01(\t\"1\n\x16\x43\x61\x63heableStatsResponse\x12\x17\n\x0f\x63\x61\x63heable_stats\x18\x01 \x01(\x0c\"$\n\x10\x43\x61\x63heResizeQuery\x12\x10\n\x08new_size\x18\x01 \x01(\x05\"0\n\x13\x43\x61\x63heResizeResponse\x12\x19\n\x11num_deleted_items\x18\x01 \x01(\x05\"H\n\x0e\x43\x61\x63heKeysQuery\x12\x1f\n\x12regex_match_string\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\x15\n\x13_regex_match_string\"\'\n\x11\x43\x61\x63heKeysResponse\x12\x12\n\ncache_keys\x18\x01 \x03(\t2\xef\x05\n\x0c\x43\x61\x63heService\x12J\n\x03Get\x12\x1e.cache_transport.CacheGetQuery\x1a!.cache_transport.CacheGetResponse\"\x00\x12J\n\x03Put\x12\x1e.cache_transport.CachePutQuery\x1a!.cache_transport.CachePutResponse\"\x00\x12J\n\x03Pop\x12\x1e.cache_transport.CachePopQuery\x1a!.cache_transport.CachePopResponse\"\x00\x12S\n\x06\x44\x65lete\x12!.cache_transport.CacheDeleteQuery\x1a$.cache_transport.CacheDeleteResponse\"\x00\x12M\n\x04Wipe\x12\x1f.cache_transport.CacheWipeQuery\x1a\".cache_transport.CacheWipeResponse\"\x00\x12P\n\x05Stats\x12 .cache_transport.CacheStatsQuery\x1a#.cache_transport.CacheStatsResponse\"\x00\x12\x61\n\x0e\x43\x61\x63heableStats\x12$.cache_transport.CacheableStatsQuery\x1a\'.cache_transport.CacheableStatsResponse\"\x00\x12S\n\x06Resize\x12!.cache_transport.CacheResizeQuery\x1a$.cache_transport.CacheResizeResponse\"\x00\x12M\n\x04Keys\x12\x1f.cache_transport.CacheKeysQuery\x1a\".cache_transport.CacheKeysResponse\"\x00\x62\x06proto3'
 )
 
 
@@ -427,9 +427,209 @@ _CACHESTATSRESPONSE = _descriptor.Descriptor(
   serialized_end=543,
 )
 
+
+_CACHEABLESTATSQUERY = _descriptor.Descriptor(
+  name='CacheableStatsQuery',
+  full_name='cache_transport.CacheableStatsQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='cache_transport.CacheableStatsQuery.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=545,
+  serialized_end=579,
+)
+
+
+_CACHEABLESTATSRESPONSE = _descriptor.Descriptor(
+  name='CacheableStatsResponse',
+  full_name='cache_transport.CacheableStatsResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cacheable_stats', full_name='cache_transport.CacheableStatsResponse.cacheable_stats', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=581,
+  serialized_end=630,
+)
+
+
+_CACHERESIZEQUERY = _descriptor.Descriptor(
+  name='CacheResizeQuery',
+  full_name='cache_transport.CacheResizeQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='new_size', full_name='cache_transport.CacheResizeQuery.new_size', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=632,
+  serialized_end=668,
+)
+
+
+_CACHERESIZERESPONSE = _descriptor.Descriptor(
+  name='CacheResizeResponse',
+  full_name='cache_transport.CacheResizeResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_deleted_items', full_name='cache_transport.CacheResizeResponse.num_deleted_items', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=670,
+  serialized_end=718,
+)
+
+
+_CACHEKEYSQUERY = _descriptor.Descriptor(
+  name='CacheKeysQuery',
+  full_name='cache_transport.CacheKeysQuery',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='regex_match_string', full_name='cache_transport.CacheKeysQuery.regex_match_string', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='_regex_match_string', full_name='cache_transport.CacheKeysQuery._regex_match_string',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=720,
+  serialized_end=792,
+)
+
+
+_CACHEKEYSRESPONSE = _descriptor.Descriptor(
+  name='CacheKeysResponse',
+  full_name='cache_transport.CacheKeysResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cache_keys', full_name='cache_transport.CacheKeysResponse.cache_keys', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=794,
+  serialized_end=833,
+)
+
 _CACHEPUTQUERY.oneofs_by_name['_expiry'].fields.append(
   _CACHEPUTQUERY.fields_by_name['expiry'])
 _CACHEPUTQUERY.fields_by_name['expiry'].containing_oneof = _CACHEPUTQUERY.oneofs_by_name['_expiry']
+_CACHEKEYSQUERY.oneofs_by_name['_regex_match_string'].fields.append(
+  _CACHEKEYSQUERY.fields_by_name['regex_match_string'])
+_CACHEKEYSQUERY.fields_by_name['regex_match_string'].containing_oneof = _CACHEKEYSQUERY.oneofs_by_name['_regex_match_string']
 DESCRIPTOR.message_types_by_name['CacheGetQuery'] = _CACHEGETQUERY
 DESCRIPTOR.message_types_by_name['CacheGetResponse'] = _CACHEGETRESPONSE
 DESCRIPTOR.message_types_by_name['CachePutQuery'] = _CACHEPUTQUERY
@@ -442,6 +642,12 @@ DESCRIPTOR.message_types_by_name['CacheWipeQuery'] = _CACHEWIPEQUERY
 DESCRIPTOR.message_types_by_name['CacheWipeResponse'] = _CACHEWIPERESPONSE
 DESCRIPTOR.message_types_by_name['CacheStatsQuery'] = _CACHESTATSQUERY
 DESCRIPTOR.message_types_by_name['CacheStatsResponse'] = _CACHESTATSRESPONSE
+DESCRIPTOR.message_types_by_name['CacheableStatsQuery'] = _CACHEABLESTATSQUERY
+DESCRIPTOR.message_types_by_name['CacheableStatsResponse'] = _CACHEABLESTATSRESPONSE
+DESCRIPTOR.message_types_by_name['CacheResizeQuery'] = _CACHERESIZEQUERY
+DESCRIPTOR.message_types_by_name['CacheResizeResponse'] = _CACHERESIZERESPONSE
+DESCRIPTOR.message_types_by_name['CacheKeysQuery'] = _CACHEKEYSQUERY
+DESCRIPTOR.message_types_by_name['CacheKeysResponse'] = _CACHEKEYSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CacheGetQuery = _reflection.GeneratedProtocolMessageType('CacheGetQuery', (_message.Message,), {
@@ -528,6 +734,48 @@ CacheStatsResponse = _reflection.GeneratedProtocolMessageType('CacheStatsRespons
   })
 _sym_db.RegisterMessage(CacheStatsResponse)
 
+CacheableStatsQuery = _reflection.GeneratedProtocolMessageType('CacheableStatsQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEABLESTATSQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheableStatsQuery)
+  })
+_sym_db.RegisterMessage(CacheableStatsQuery)
+
+CacheableStatsResponse = _reflection.GeneratedProtocolMessageType('CacheableStatsResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEABLESTATSRESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheableStatsResponse)
+  })
+_sym_db.RegisterMessage(CacheableStatsResponse)
+
+CacheResizeQuery = _reflection.GeneratedProtocolMessageType('CacheResizeQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHERESIZEQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheResizeQuery)
+  })
+_sym_db.RegisterMessage(CacheResizeQuery)
+
+CacheResizeResponse = _reflection.GeneratedProtocolMessageType('CacheResizeResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHERESIZERESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheResizeResponse)
+  })
+_sym_db.RegisterMessage(CacheResizeResponse)
+
+CacheKeysQuery = _reflection.GeneratedProtocolMessageType('CacheKeysQuery', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEKEYSQUERY,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheKeysQuery)
+  })
+_sym_db.RegisterMessage(CacheKeysQuery)
+
+CacheKeysResponse = _reflection.GeneratedProtocolMessageType('CacheKeysResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CACHEKEYSRESPONSE,
+  '__module__' : 'cache.cache_service_pb2'
+  # @@protoc_insertion_point(class_scope:cache_transport.CacheKeysResponse)
+  })
+_sym_db.RegisterMessage(CacheKeysResponse)
+
 
 
 _CACHESERVICE = _descriptor.ServiceDescriptor(
@@ -537,8 +785,8 @@ _CACHESERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=546,
-  serialized_end=1034,
+  serialized_start=836,
+  serialized_end=1587,
   methods=[
   _descriptor.MethodDescriptor(
     name='Get',
@@ -597,6 +845,36 @@ _CACHESERVICE = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_CACHESTATSQUERY,
     output_type=_CACHESTATSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='CacheableStats',
+    full_name='cache_transport.CacheService.CacheableStats',
+    index=6,
+    containing_service=None,
+    input_type=_CACHEABLESTATSQUERY,
+    output_type=_CACHEABLESTATSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Resize',
+    full_name='cache_transport.CacheService.Resize',
+    index=7,
+    containing_service=None,
+    input_type=_CACHERESIZEQUERY,
+    output_type=_CACHERESIZERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Keys',
+    full_name='cache_transport.CacheService.Keys',
+    index=8,
+    containing_service=None,
+    input_type=_CACHEKEYSQUERY,
+    output_type=_CACHEKEYSRESPONSE,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),

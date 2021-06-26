@@ -44,6 +44,26 @@ message CacheStatsResponse {
     bytes current_stats = 1;
 }
 
+message CacheableStatsQuery {
+    string key = 1;
+}
+message CacheableStatsResponse {
+    bytes cacheable_stats = 1;
+}
+
+message CacheResizeQuery {
+    int32 new_size = 1;
+}
+message CacheResizeResponse {
+    int32 num_deleted_items = 1;
+}
+
+message CacheKeysQuery {
+    optional string regex_match_string = 1;
+}
+message CacheKeysResponse {
+    repeated string cache_keys = 1;
+}
 
 service CacheService {
   // Gets the cacheable's value at key position, if it exists
@@ -58,4 +78,10 @@ service CacheService {
   rpc Wipe(CacheWipeQuery) returns (CacheWipeResponse) {}
   // Gets cache stats
   rpc Stats(CacheStatsQuery) returns (CacheStatsResponse) {}
+  // Gets the stats for a given cacheable
+  rpc CacheableStats(CacheableStatsQuery) returns (CacheableStatsResponse) {}
+  // Resizes the cache, while max size is exceeded, deletes lru cacheables
+  rpc Resize(CacheResizeQuery) returns (CacheResizeResponse) {}
+  // Gets keys from the cache matching the given regex, otherwise all keys
+  rpc Keys(CacheKeysQuery) returns (CacheKeysResponse) {}
 }

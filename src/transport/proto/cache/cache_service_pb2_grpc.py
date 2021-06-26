@@ -44,6 +44,21 @@ class CacheServiceStub(object):
                 request_serializer=cache_dot_cache__service__pb2.CacheStatsQuery.SerializeToString,
                 response_deserializer=cache_dot_cache__service__pb2.CacheStatsResponse.FromString,
                 )
+        self.CacheableStats = channel.unary_unary(
+                '/cache_transport.CacheService/CacheableStats',
+                request_serializer=cache_dot_cache__service__pb2.CacheableStatsQuery.SerializeToString,
+                response_deserializer=cache_dot_cache__service__pb2.CacheableStatsResponse.FromString,
+                )
+        self.Resize = channel.unary_unary(
+                '/cache_transport.CacheService/Resize',
+                request_serializer=cache_dot_cache__service__pb2.CacheResizeQuery.SerializeToString,
+                response_deserializer=cache_dot_cache__service__pb2.CacheResizeResponse.FromString,
+                )
+        self.Keys = channel.unary_unary(
+                '/cache_transport.CacheService/Keys',
+                request_serializer=cache_dot_cache__service__pb2.CacheKeysQuery.SerializeToString,
+                response_deserializer=cache_dot_cache__service__pb2.CacheKeysResponse.FromString,
+                )
 
 
 class CacheServiceServicer(object):
@@ -91,6 +106,27 @@ class CacheServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CacheableStats(self, request, context):
+        """Gets the stats for a given cacheable
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Resize(self, request, context):
+        """Resizes the cache, while max size is exceeded, deletes lru cacheables
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Keys(self, request, context):
+        """Gets keys from the cache matching the given regex, otherwise all keys
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_CacheServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -123,6 +159,21 @@ def add_CacheServiceServicer_to_server(servicer, server):
                     servicer.Stats,
                     request_deserializer=cache_dot_cache__service__pb2.CacheStatsQuery.FromString,
                     response_serializer=cache_dot_cache__service__pb2.CacheStatsResponse.SerializeToString,
+            ),
+            'CacheableStats': grpc.unary_unary_rpc_method_handler(
+                    servicer.CacheableStats,
+                    request_deserializer=cache_dot_cache__service__pb2.CacheableStatsQuery.FromString,
+                    response_serializer=cache_dot_cache__service__pb2.CacheableStatsResponse.SerializeToString,
+            ),
+            'Resize': grpc.unary_unary_rpc_method_handler(
+                    servicer.Resize,
+                    request_deserializer=cache_dot_cache__service__pb2.CacheResizeQuery.FromString,
+                    response_serializer=cache_dot_cache__service__pb2.CacheResizeResponse.SerializeToString,
+            ),
+            'Keys': grpc.unary_unary_rpc_method_handler(
+                    servicer.Keys,
+                    request_deserializer=cache_dot_cache__service__pb2.CacheKeysQuery.FromString,
+                    response_serializer=cache_dot_cache__service__pb2.CacheKeysResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -233,5 +284,56 @@ class CacheService(object):
         return grpc.experimental.unary_unary(request, target, '/cache_transport.CacheService/Stats',
             cache_dot_cache__service__pb2.CacheStatsQuery.SerializeToString,
             cache_dot_cache__service__pb2.CacheStatsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CacheableStats(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cache_transport.CacheService/CacheableStats',
+            cache_dot_cache__service__pb2.CacheableStatsQuery.SerializeToString,
+            cache_dot_cache__service__pb2.CacheableStatsResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Resize(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cache_transport.CacheService/Resize',
+            cache_dot_cache__service__pb2.CacheResizeQuery.SerializeToString,
+            cache_dot_cache__service__pb2.CacheResizeResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Keys(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cache_transport.CacheService/Keys',
+            cache_dot_cache__service__pb2.CacheKeysQuery.SerializeToString,
+            cache_dot_cache__service__pb2.CacheKeysResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
