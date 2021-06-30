@@ -7,8 +7,10 @@ from src.cacheables import ICacheable, NOTEXISTS, new_cacheable
 from utils import NumberType
 
 
-class Cache:
-    __func_caches: Dict[Text, 'Cache'] = {}
+class Chache:
+    # chacha was taken
+
+    __func_chaches: Dict[Text, 'Chache'] = {}
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
         '''
@@ -19,18 +21,19 @@ class Cache:
         '''
         self.__data: Dict[Any, ICacheable] = {}
         self.size: int = 0
-        self.max_size: Union[int, None] = max_size
+        self.max_size: int = max_size
         self.last_cleaned: Union[dt.timedelta, None] = None
+        self._clean_now: bool = True
         self.hits: int = 0
         self.misses: int = 0
-        self.lru: Union[Any, None] = None
-        self.mru: Union[Any, None] = None
+        self.lru: Any = None
+        self.mru: Any = None
         self.cleaner_thread: threading.Thread = self._create_cleaner_thread(cleaning_frequency_s)
 
     @classmethod
     def _get_func_cache(cls, func: Callable,
-                        max_size: Union[int, None],
-                        cleaning_frequency_s: NumberType) -> 'Cache':
+                        max_size: int,
+                        cleaning_frequency_s: NumberType) -> 'Chache':
         '''
         Instantiates the Cache class for the decorated function, if one doesn't already exist.
 
@@ -39,15 +42,15 @@ class Cache:
         :param cleaning_frequency_s: The delay between checks for removing cacheables
         :return: The functions' cache
         '''
-        ret = cls.__func_caches.get(func.__name__)
+        ret = cls.__func_chaches.get(func.__name__)
         if not ret:
-            ret = Cache(max_size=max_size, cleaning_frequency_s=cleaning_frequency_s)
-            cls.__func_caches[func.__name__] = ret
+            ret = Chache(max_size=max_size, cleaning_frequency_s=cleaning_frequency_s)
+            cls.__func_chaches[func.__name__] = ret
         return ret
 
     @classmethod
     def sized_func_cache(cls, expiry: dt.date = None,
-                         max_size: Union[int, None] = None,
+                         max_size: int = None,
                          cleaning_frequency_s: NumberType = 120) -> Callable:
         '''
         The external function decorator and API for the Cache.
@@ -272,16 +275,23 @@ class Cache:
         got_cacheable = self.__data.get(key)
         return got_cacheable.stats() if got_cacheable else {}
 
-    def resize(self, new_size: int) -> NoReturn:
+    def resize(self, new_size: int) -> int:
         '''
         Changes the Cache's maximum size.
-        If the new size is less than the current size, lrus' get deleted, until they are equal
+        If the new size is less than the current size, lrus get deleted, until they are equal
 
         :param new_size: New max size to set the Cache to
+        :return: Number of items that we deleted to make room
         '''
+        num_deleted_items: int = 0
+
         while new_size < self.size:
             self.delete(self.lru)
+            num_deleted_items += 1
+
         self.max_size = new_size
+
+        return num_deleted_items
 
     def keys(self) -> KeysView[Any]:  # pragma: no cover
         '''
@@ -307,13 +317,14 @@ class Cache:
 
         :param cleaning_frequency_s: Delay between cleaning checks
         '''
-        time.sleep(cleaning_frequency_s)
-        current_time = dt.datetime.now()
-        for key, cacheable in self.items():
-            if cacheable.expires:
-                if cacheable.expiration >= current_time:
-                    self.delete(key)
-        self.last_cleaned = current_time
+        while self._clean_now:
+            time.sleep(cleaning_frequency_s)
+            current_time = dt.datetime.now()
+            for key, cacheable in self.items():
+                if cacheable.expires:
+                    if cacheable.expiration >= current_time:
+                        self.delete(key)
+            self.last_cleaned = current_time
 
     @staticmethod
     def _get_hashable_key(key: Any):

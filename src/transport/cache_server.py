@@ -1,10 +1,11 @@
 import pickle
+import re
 import threading
 from concurrent.futures.thread import ThreadPoolExecutor
 
 import grpc
 
-from src.cache_lib import Cache
+from src.chache import Chache
 from src.cacheables import NOTEXISTS
 from src.transport.proto.cache.cache_service_pb2 import *
 from src.transport.proto.cache.cache_service_pb2_grpc import CacheServiceServicer, add_CacheServiceServicer_to_server
@@ -15,7 +16,7 @@ from utils.logging import *
 class CacheService(CacheServiceServicer):
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
-        self.cache = Cache(max_size, cleaning_frequency_s)
+        self.cache = Chache(max_size, cleaning_frequency_s)
         info('Started cache service')
 
     def __del__(self):
@@ -32,7 +33,10 @@ class CacheService(CacheServiceServicer):
         return get_response
 
     def Put(self, request: CachePutQuery, _) -> CachePutResponse:
-        actual_expiry = datetime.datetime.fromtimestamp(request.expiry)  # integrated datetime? in this economy?
+
+        # expiry is unix timestamp to be converted to datetime
+        actual_expiry = datetime.datetime.fromtimestamp(request.expiry)
+
         cache_put = self.cache.put(request.key, request.value, actual_expiry)
         put_response = CachePutResponse(put_success=cache_put)
         info(f"Put method invoked with key={request.key}, expiry={actual_expiry}, success={cache_put}")
@@ -51,7 +55,7 @@ class CacheService(CacheServiceServicer):
         info(f"Delete method invoked with key={request.key}, success={deleted}")
         return delete_response
 
-    def Wipe(self, _: CacheWipeQuery, __):
+    def Wipe(self, _: CacheWipeQuery, __) -> CacheWipeResponse:
         wiped = self.cache.wipe()
         wipe_response = CacheWipeResponse(entries_wiped=wiped)
         info(f"Wipe method invoked, entries_wiped={wiped}")
@@ -63,6 +67,29 @@ class CacheService(CacheServiceServicer):
         stats_response = CacheStatsResponse(current_stats=serialized_stats)
         info(f"Stats method invoked")
         return stats_response
+
+    def CacheableStats(self, request: CacheableStatsQuery, _) -> CacheableStatsResponse:
+        cacheable_stats = self.cache.get_cacheable_stats(request.key)
+        serialized_cacheable_stats = pickle.dumps(cacheable_stats)
+        cacheable_stats_response = CacheableStatsResponse(cacheable_stats=serialized_cacheable_stats)
+        return cacheable_stats_response
+
+    def Resize(self, request: CacheResizeQuery, _) -> CacheResizeResponse:
+        deleted_keys: int = self.cache.resize(request.new_size)
+        resize_response = CacheResizeResponse(num_deleted_items=deleted_keys)
+        return resize_response
+
+    def Keys(self, request: CacheKeysQuery, _) -> CacheKeysResponse:
+        cache_keys = self.cache.keys()
+
+        if request.regex_match_string:
+            cache_keys = [key for key in cache_keys if re.search(request.regex_match_string, key)]
+        else:
+            cache_keys = list(cache_keys)
+
+        cache_keys_response = CacheKeysResponse(cache_keys=cache_keys)
+
+        return cache_keys_response
 
 
 def start_server(service: CacheService, port: int, max_workers: int = 10) -> grpc.Server:

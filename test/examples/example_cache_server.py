@@ -8,7 +8,7 @@ def _wait_enter(server):
 
 
 def main():
-    service = CacheService(max_size=5, cleaning_frequency_s=15)
+    service = CacheService(max_size=5, cleaning_frequency_s=1)
     server = start_server(service, port=8080)
     return server
 

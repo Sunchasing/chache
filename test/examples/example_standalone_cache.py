@@ -1,12 +1,12 @@
-from src.cache_lib import Cache
+from src.chache import Chache
 
 
-@Cache.sized_func_cache(None, 10, 102)
+@Chache.sized_func_cache(None, 10, 102)
 def pancakes(x, y, z):
     print(x+y+z)
 
 
-@Cache.sized_func_cache(None, None, 102)
+@Chache.sized_func_cache(None, None, 102)
 def pound_cakes(x, y, z):
     print(x+y+z)
 

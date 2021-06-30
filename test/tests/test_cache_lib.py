@@ -1,7 +1,7 @@
 import unittest
 from typing import Text, Any, NoReturn
 
-from src.cache_lib import Cache
+from src.chache import Chache
 from src.cacheables import NOTEXISTS
 
 
@@ -10,7 +10,7 @@ class TestCache(unittest.TestCase):
     def setUp(self) -> Any:
         self.max_size = 3
         self.cleaning_freq = 120
-        self.cache = Cache(max_size=self.max_size, cleaning_frequency_s=self.cleaning_freq)
+        self.cache = Chache(max_size=self.max_size, cleaning_frequency_s=self.cleaning_freq)
 
     def test_init(self) -> NoReturn:
         self.assertTrue(self.cache.cleaner_thread.is_alive())
@@ -50,7 +50,7 @@ class TestCache(unittest.TestCase):
         self.assertEqual(self.cache.data.get(new_gettable_key).previous_key, None)
 
     def test_decorator(self):
-        @Cache.sized_func_cache(expiry=None, max_size=2, cleaning_frequency_s=10)
+        @Chache.sized_func_cache(expiry=None, max_size=2, cleaning_frequency_s=10)
         def testable_function(arr: Text) -> Text:
             return arr[-1]
 

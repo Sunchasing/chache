@@ -1,9 +1,11 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any, Union, Dict, Text
+import datetime as dt
 
 
 class ICacheable(metaclass=ABCMeta):  # pragma: no cover
     expires: bool
+    expiration: dt.date
 
     def __init__(self, value: Any):
         '''
