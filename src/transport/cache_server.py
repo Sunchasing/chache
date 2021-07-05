@@ -13,7 +13,7 @@ from utils import NumberType
 from utils.logging import *
 
 
-class CacheService(CacheServiceServicer):
+class CacheService(CacheServiceServicer):  # pragma: no cover
 
     def __init__(self, max_size: int, cleaning_frequency_s: NumberType):
         self.cache = Chache(max_size, cleaning_frequency_s)

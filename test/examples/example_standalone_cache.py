@@ -18,7 +18,7 @@ def main():
     pound_cakes(1, 5, 4)
     pound_cakes(2, 2, 4)
     pound_cakes(1, 5, 4)
-    print(pound_cakes.get_cacheable_stats((1, 5, 4)))
+    print(pound_cakes.cache.stats())
 
 
 if __name__ == "__main__":

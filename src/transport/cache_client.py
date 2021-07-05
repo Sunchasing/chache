@@ -9,7 +9,7 @@ from utils import NumberType
 from utils.logging import info
 
 
-class CacheClient:
+class CacheClient:  # pragma: no cover
 
     def __init__(self, stub: CacheServiceStub, channel: Channel):
         self._client = stub

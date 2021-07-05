@@ -1,15 +1,17 @@
+import datetime
+import time
 import unittest
 from typing import Text, Any, NoReturn
 
+from src.cacheables import NOTEXISTS, new_cacheable
 from src.chache import Chache
-from src.cacheables import NOTEXISTS
 
 
 class TestCache(unittest.TestCase):
 
     def setUp(self) -> Any:
         self.max_size = 3
-        self.cleaning_freq = 120
+        self.cleaning_freq = 3
         self.cache = Chache(max_size=self.max_size, cleaning_frequency_s=self.cleaning_freq)
 
     def test_init(self) -> NoReturn:
@@ -29,6 +31,9 @@ class TestCache(unittest.TestCase):
         gettable_value = "pot"
         new_gettable_key = "bees"
         new_gettable_value = "knees"
+        updated_gettable_time = datetime.datetime.now()
+        missing_key = 'sanction Mars'
+        unhashable_key = ['yes', 'no']
 
         # Tests the get() method when we have and don't have a cached value
         self.assertEqual(self.cache.get(gettable_key), NOTEXISTS)
@@ -37,17 +42,49 @@ class TestCache(unittest.TestCase):
 
         # Tests the put() method and the linking between cacheables
         self.cache.put(new_gettable_key, new_gettable_value)
-        self.assertEqual(self.cache.data.get(gettable_key).next_key, new_gettable_key)
-        self.assertEqual(self.cache.data.get(new_gettable_key).previous_key, gettable_key)
+        cache_reply = self.cache.data.get(gettable_key).next_key
+        self.assertEqual(cache_reply, new_gettable_key)
+        cache_reply = self.cache.data.get(new_gettable_key).previous_key
+        self.assertEqual(cache_reply, gettable_key)
+        cache_reply = self.cache.put(new_gettable_key, new_gettable_value)
+        self.assertEqual(cache_reply, False)
+
+        # Tests the pop() method
         self.cache.pop(gettable_key)
+        cache_reply = self.cache.get(gettable_key)
+        self.assertEqual(cache_reply, NOTEXISTS)
 
         # Tests the stats() method for the cache and if it's properly updating
         got_stats = self.cache.stats()
-        self.assertEqual(got_stats.get("misses"), 1)
+        self.assertEqual(got_stats.get("misses"), 2)
         self.assertEqual(got_stats.get("hits"), 2)
-        self.assertEqual(got_stats.get("accesses"), 3)
+        self.assertEqual(got_stats.get("accesses"), 4)
         self.assertEqual(self.cache.data.get(new_gettable_key).next_key, None)
         self.assertEqual(self.cache.data.get(new_gettable_key).previous_key, None)
+
+        # Tests the update() method and proper updating
+        updated = self.cache.update("bees", "sand", updated_gettable_time)
+        self.assertEqual(updated, True)
+        updated = self.cache.update(missing_key, updated_gettable_time)
+        self.assertEqual(updated, False)
+        self.cache.update("bees", "sand", updated_gettable_time)
+        time.sleep(5)
+        delete_missing_kv = self.cache.delete("bees")
+        self.assertEqual(delete_missing_kv, False)
+
+        # Tests the resize() method
+        self.cache.put('kek', 'w')
+        self.cache.put('kappa', 'pride')
+        self.assertEqual(self.cache.max_size, 3)
+        self.cache.resize(15)
+        self.assertEqual(self.cache.max_size, 15)
+        num_deleted_on_resized = self.cache.resize(1)
+        self.assertEqual(self.cache.max_size, 1)
+        self.assertEqual(num_deleted_on_resized, 1)
+
+        # Tests hashing to string
+        cache_reply = self.cache._get_hashable_key(unhashable_key)
+        self.assertEqual(cache_reply, str(unhashable_key))
 
     def test_decorator(self):
         @Chache.sized_func_cache(expiry=None, max_size=2, cleaning_frequency_s=10)
@@ -84,3 +121,35 @@ class TestCache(unittest.TestCase):
         self.assertEqual(testable_function.cache.max_size, 2)
         testable_function.cache.resize(15)
         self.assertEqual(testable_function.cache.max_size, 15)
+
+class TestCacheable(unittest.TestCase):
+
+    def setUp(self) -> Any:
+        self.target_time = datetime.datetime.now()
+        self.untimed = new_cacheable('monkey')
+        self.timed = new_cacheable('chimney', self.target_time)
+        self.not_exists = NOTEXISTS
+
+    def test_functionality(self):
+        # Tests persistent cacheable
+        cacheable_reply = self.untimed.get_value()
+        self.assertEqual(cacheable_reply, 'monkey')
+        cacheable_reply = self.untimed.stats()
+        self.assertEqual(cacheable_reply, {"hits": 1, "expiry": None})
+
+        # Tests expiring cacheable
+        cacheable_reply = self.timed.get_value()
+        self.assertEqual(cacheable_reply, 'chimney')
+        cacheable_reply = self.timed.stats()
+        self.assertEqual(cacheable_reply, {"hits": 1, "expiry": self.target_time})
+        new_expiration = datetime.datetime.now()
+        self.timed.set_expiration_to(new_expiration)
+        self.assertEqual(self.timed.expiration, new_expiration)
+
+        self.timed.update_expiration_by(datetime.timedelta(1))
+        self.assertEqual(self.timed.expiration, new_expiration+datetime.timedelta(1))
+
+
+        # Tests NOTEXISTS cacheable
+        cacheable_reply = self.not_exists.get_value()
+        assert (cacheable_reply, None)

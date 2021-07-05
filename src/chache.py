@@ -5,6 +5,7 @@ from typing import Text, Dict, Any, Union, NoReturn, KeysView, ValuesView, Items
 
 from src.cacheables import ICacheable, NOTEXISTS, new_cacheable
 from utils import NumberType
+from utils.logging import info
 
 
 class Chache:
@@ -54,7 +55,7 @@ class Chache:
                          cleaning_frequency_s: NumberType = 120) -> Callable:
         '''
         The external function decorator and API for the Cache.
-        Injects cache and cacheable functions into the passed function.
+        Injects cache functions into the passed function.
 
         :param expiry: The time when the cacheable will be flagged for cleaning
         :param max_size: The maximum number of cacheables to be stored
@@ -143,7 +144,14 @@ class Chache:
             self.misses += 1
             return NOTEXISTS
 
-    def _put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None):
+    def _put(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> NoReturn:
+        '''
+        Internal insertion method.
+
+        :param key: The key to the cacheable
+        :param value: The value of the cacheable
+        :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
+        '''
 
         new_item = new_cacheable(value, expiry)
 
@@ -166,6 +174,8 @@ class Chache:
         :param key: The key to the cacheable
         :param value: The value of the cacheable
         :param expiry: The expiration of the cacheable. Setting it to None will make it persistent.
+
+        :return: Success (cacheable didn't already exist)
         '''
         key = self._get_hashable_key(key)
         if self.exists(key):
@@ -189,10 +199,15 @@ class Chache:
         Deletes a specified cacheable and updates relevant links.
 
         :param key: The key for the cacheable to delete
+
+        :returns: Deletion success (it existed)
         '''
 
         if not self.exists(key):
             return False
+
+        if self.size == 1: # TODO: Unhardcode this
+            self.mru = None
 
         key = self._get_hashable_key(key)
         current_cacheable: ICacheable = self.__data[key]
@@ -208,12 +223,12 @@ class Chache:
             next_value = self.__data.get(cc_next_key)
             next_value.previous_key = cc_previous_key
         else:
+
             self.mru = cc_previous_key
 
         del self.__data[key]
         self.size -= 1
         return True
-
 
     def exists(self, key: Any) -> bool:
         '''
@@ -232,7 +247,7 @@ class Chache:
         Pops the specified cacheable
 
         :param key: Key for the cacheable to pop
-        :return:
+        :return: the cacheable's value, deletion success (if it existed)
         '''
         cached_val = self.get(key)
         deleted = self.delete(key)
@@ -242,6 +257,7 @@ class Chache:
         '''
         Removes all data in the Cache, but keeps statistics
 
+        :return: size of the cache before being wiped
         '''
         pre_wipe_size: int = self.size
         self.__data = {}
@@ -322,12 +338,18 @@ class Chache:
             current_time = dt.datetime.now()
             for key, cacheable in self.items():
                 if cacheable.expires:
-                    if cacheable.expiration >= current_time:
+                    if cacheable.expiration <= current_time:
                         self.delete(key)
             self.last_cleaned = current_time
 
     @staticmethod
     def _get_hashable_key(key: Any):
+        '''
+        Internal hash check. Attempts to hash the key. Casts the key to str(), if the hash fails.
+
+        :param key: The cacheable's key
+        :return: str() of the key
+        '''
         try:
             hash(key)
         except TypeError:
