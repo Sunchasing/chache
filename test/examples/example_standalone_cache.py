@@ -1,24 +1,30 @@
+import datetime
+import time
 from src.chache import Chache
 
 
-@Chache.sized_func_cache(None, 10, 102)
-def pancakes(x, y, z):
-    print(x+y+z)
+class Market:
 
+    def __init__(self):
+        self.stability = [5, 9, 32, 100]
 
-@Chache.sized_func_cache(None, None, 102)
-def pound_cakes(x, y, z):
-    print(x+y+z)
+    @Chache.sized_func_cache(datetime.datetime.now(), 5, 5)
+    def get_market_stability(self, market: int):
+        return self.stability[market]
+
+    @Chache.sized_func_cache(expiry=datetime.datetime.now(), max_size=2, cleaning_frequency_s=5)
+    def get_market_volatility(self, market: int):
+        return self.stability[::-1][market]
+
 
 def main():
-    pancakes(1, 5, 4)
-    pancakes(2, 2, 4)
-    pancakes(1, 5, 4)
-    print(pancakes.cache.stats())
-    pound_cakes(1, 5, 4)
-    pound_cakes(2, 2, 4)
-    pound_cakes(1, 5, 4)
-    print(pound_cakes.cache.stats())
+    market = Market()
+    print(market.get_market_volatility(0))
+    print(market.get_market_volatility.cache.stats())
+    print(market.get_market_stability(0))
+    print(market.get_market_stability.cache.stats())
+    time.sleep(8)
+    print(market.get_market_stability.cache.stats())
 
 
 if __name__ == "__main__":

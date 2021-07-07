@@ -188,6 +188,7 @@ class Chache:
 
     def update(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> bool:
         key = self._get_hashable_key(key)
+        print(self.exists(key))
         if not self.exists(key):
             return False
 
@@ -348,7 +349,7 @@ class Chache:
         Internal hash check. Attempts to hash the key. Casts the key to str(), if the hash fails.
 
         :param key: The cacheable's key
-        :return: str() of the key
+        :return: A unique string representation of the key
         '''
         try:
             hash(key)
