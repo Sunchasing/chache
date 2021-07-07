@@ -2,7 +2,7 @@
 
 Author: Sunchasing
 
-Version: 0.2.1
+Version: 0.9.6
 
 ## About
 
@@ -14,20 +14,28 @@ Records usage statistic for each cached item.
 
 ### Decorator
 
-To use the cache as a function decorator, use the 
-`sized_func_cache` class method.
+To use the cache as a function decorator, use the
+`sized_func_cache` class method. This method injects a `cache` attribute in the function.
 
 The parameters it takes are:
- - `expiry`: The time (in seconds) it would take for the function call to expire. If unset, is persistent.
- - `max_size`: Number of function calls to store. If unset, there is no limit.
- - `cleaning_frequency_s`: The interval between checking for expired function calls.
- 
+- `expiry`: The time (in seconds) it would take for the function call to expire. If unset, is persistent.
+- `max_size`: Number of function calls to store. If unset, there is no limit.
+- `cleaning_frequency_s`: The interval between checking for expired function calls.
+
 ### gRPC server/client
-Todo
+
+The gRPC cache server can be started via `CacheService` and `start_server`.
+
+The parameters it takes are:
+- `max_size`: Number of function calls to store. If unset, there is no limit.
+- `cleaning_frequency_s`: The interval between checking for expired function calls.
+
+The client can be started via `CacheClient.initialize_client()`, and needs only a `port`.
+
+
 
 ## Todo
 
-- Finish README
-- Server/client gRPC
-- Tests
-- Comprehensible examples (10%)
+- Finish gRPC (95%)
+- Tests (80%)
+- Comprehensible examples (30%)
