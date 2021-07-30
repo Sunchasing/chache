@@ -6,7 +6,7 @@ from src.chache import Chache
 
 @Chache.sized_func_cache(datetime.datetime.now(), 5, 5)
 def isr(x: float):
-    return x ** -1 / 2
+    return x ** (-1 / 2)
 
 
 def main():
