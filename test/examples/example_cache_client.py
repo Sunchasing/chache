@@ -1,4 +1,3 @@
-import time
 from datetime import datetime
 
 from src.transport.cache_client import CacheClient
@@ -23,9 +22,8 @@ def main():
     client.put('55', '55', datetime.now().timestamp() + 6.9)
     print(client.get_cacheable_stats('7'))
     print(client.keys())
-    time.sleep(10)
-    print(client.get_cacheable_stats('7'))
-    print(client.keys())
+    print(client.stats())
+
 
 if __name__ == '__main__':
     main()

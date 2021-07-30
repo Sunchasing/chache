@@ -5,7 +5,6 @@ from typing import Text, Dict, Any, Union, NoReturn, KeysView, ValuesView, Items
 
 from src.cacheables import ICacheable, NOTEXISTS, new_cacheable
 from utils import NumberType
-from utils.logging import info
 
 
 class Chache:
@@ -188,7 +187,6 @@ class Chache:
 
     def update(self, key: Any, value: Any, expiry: Union[dt.date, None] = None) -> bool:
         key = self._get_hashable_key(key)
-        print(self.exists(key))
         if not self.exists(key):
             return False
 
