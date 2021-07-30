@@ -99,9 +99,7 @@ class TestCache(unittest.TestCase):
         cache_reply = self.cache._get_hashable_key(hash_tuple)
         self.assertEqual(cache_reply, str(hash_tuple))
 
-
     def test_decorator(self):
-
         @Chache.sized_func_cache(expiry=None, max_size=2, cleaning_frequency_s=10)
         def testable_function(arr: Text) -> Text:
             return 'yes'
@@ -110,44 +108,6 @@ class TestCache(unittest.TestCase):
 
         # Tests if the decorator has injected a cache into the function
         self.assertIsInstance(testable_function.cache, Chache)
-
-        # @Chache.sized_func_cache(expiry=None, max_size=2, cleaning_frequency_s=10)
-        # def testable_function(arr: Text) -> Text:
-        #     return arr[-1]
-        #
-        #
-        #
-        # testable_function('horse')
-        # testable_function('eels')
-        # testable_function('maniac')
-        #
-        #
-        # # Tests the proper linking when Cache is used as a decorator
-        # self.assertEqual(testable_function.cache.data[('maniac',)].previous_key, ('eels',))
-        #
-        # # Tests the stats() method when Cache is used as a decorator
-        # maniac_stats = testable_function.cache.data[('maniac',)].stats()
-        # self.assertEqual(maniac_stats['hits'], 0)
-        # self.assertEqual(maniac_stats['expiry'], None)
-        # testable_function('maniac')
-        # maniac_stats = testable_function.cache.data[('maniac',)].stats()
-        # self.assertEqual(maniac_stats['hits'], 1)
-        # self.assertEqual(maniac_stats['expiry'], None)
-        #
-        # # Tests the get_cacheable_stats() method when Cache is used as a decorator
-        # eels_stats = testable_function.cache.get_cacheable_stats(('eels',))
-        # self.assertEqual(eels_stats, {'expiry': None, 'hits': 0})
-        #
-        # # Tests the wipe() method when Cache is used as a decorator
-        # before_wipe_stats = testable_function.cache.stats()
-        # testable_function.cache.wipe()
-        # self.assertEqual(testable_function.cache.stats(), before_wipe_stats)
-        # self.assertEqual(testable_function.cache.size, 0)
-        #
-        # # Tests the resize() method when Cache is used as a decorator
-        # self.assertEqual(testable_function.cache.max_size, 2)
-        # testable_function.cache.resize(15)
-        # self.assertEqual(testable_function.cache.max_size, 15)
 
 
 class TestCacheable(unittest.TestCase):
