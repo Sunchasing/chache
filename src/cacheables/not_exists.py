@@ -11,7 +11,7 @@ class NotExists(ICacheable):
     def get_value(self) -> Any:
         return None
 
-    def stats(self) -> Dict[Text, Any]:
+    def stats(self) -> Dict[Text, Any]:  # pragma: no cover
         raise NotImplementedError
 
     def __name(self) -> Text:  # pragma: no cover
